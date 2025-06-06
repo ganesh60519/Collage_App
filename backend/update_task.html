@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Task Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+    </style>
+</head>
+<body>
+    <h1>Update Task Status</h1>
+    
+    <div class="form-group">
+        <label for="taskId">Task ID:</label>
+        <input type="text" id="taskId" placeholder="Enter task ID">
+    </div>
+    
+    <div class="form-group">
+        <label for="status">New Status:</label>
+        <select id="status">
+            <option value="completed">Completed</option>
+            <option value="pending">Pending</option>
+            <option value="in progress">In Progress</option>
+        </select>
+    </div>
+    
+    <button onclick="updateTask()">Update Task</button>
+    
+    <div id="result" class="result" style="display: none;"></div>
+    
+    <script>
+        async function updateTask() {
+            const taskId = document.getElementById('taskId').value;
+            const status = document.getElementById('status').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!taskId) {
+                showResult('Please enter a task ID', false);
+                return;
+            }
+            
+            try {
+                // Connect to the database and update the task
+                // This is a placeholder - in a real application, you would make an API call
+                const response = await fetch(`/api/tasks/${taskId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    showResult(`Task ${taskId} updated successfully to status: ${status}`, true);
+                } else {
+                    const error = await response.text();
+                    showResult(`Failed to update task: ${error}`, false);
+                }
+            } catch (error) {
+                showResult(`Error: ${error.message}`, false);
+            }
+        }
+        
+        function showResult(message, isSuccess) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = isSuccess ? 'result success' : 'result error';
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
