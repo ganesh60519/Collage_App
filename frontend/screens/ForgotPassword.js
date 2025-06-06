@@ -12,9 +12,12 @@ import {
   ScrollView,
   StatusBar,
   SafeAreaView,
+  Dimensions,
 } from 'react-native';
 import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
+
+const { width } = Dimensions.get('window');
 
 const ForgotPassword = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -48,39 +51,39 @@ const ForgotPassword = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#0ea5e9" />
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+      <Text style={{ height: 0, width: 0, opacity: 0 }}>Mahatma Gandhi University Password Reset</Text>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoidingView}
       >
-        <ScrollView 
+        <ScrollView
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
           {/* Header Section */}
-          <View style={styles.header}>
-            <TouchableOpacity 
-              style={styles.backButton}
-              onPress={() => navigation.goBack()}
-            >
-              <Ionicons name="arrow-back" size={24} color="#ffffff" />
-            </TouchableOpacity>
-            <Text style={styles.headerTitle}>Reset Password</Text>
+          <View style={styles.headerContainer}>
+            <View style={styles.logoContainer}>
+              <Ionicons name="school-outline" size={50} color="#1e3a8a" />
+              <Text style={styles.logoText}>MGU</Text>
+            </View>
+            <Text style={styles.universityName}>Mahatma Gandhi University</Text>
+            <Text style={styles.tagline}>Empowering Education</Text>
           </View>
 
           {/* Form Section */}
           <View style={styles.formContainer}>
-            <Text style={styles.title}>Forgot Your Password?</Text>
-            <Text style={styles.subtitle}>Enter your university email to receive password reset instructions</Text>
+            <Text style={styles.welcomeText}>Reset Your Password</Text>
+            <Text style={styles.subtitle}>Enter your university email to receive reset instructions</Text>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Email</Text>
+              <Text style={styles.label}>University Email</Text>
               <View style={styles.inputWithIcon}>
                 <Ionicons name="mail-outline" size={20} color="#64748b" style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
-                  placeholder="University email address"
+                  placeholder="Enter your email (e.g., name@mguniversity.edu)"
                   value={email}
                   onChangeText={setEmail}
                   keyboardType="email-address"
@@ -98,20 +101,24 @@ const ForgotPassword = ({ navigation }) => {
               activeOpacity={0.8}
             >
               {loading ? (
-                <ActivityIndicator size="small" color="#fff" />
+                <ActivityIndicator size="small" color="#ffffff" />
               ) : (
-                <Text style={styles.buttonText}>Send Reset Instructions</Text>
+                <>
+                  <Text style={styles.buttonText}>Send Reset Instructions</Text>
+                  <Ionicons name="arrow-forward" size={20} color="#ffffff" style={styles.buttonIcon} />
+                </>
               )}
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.returnToLogin}
-              onPress={() => navigation.navigate('Login')}
-              disabled={loading}
-            >
-              <Ionicons name="arrow-back-outline" size={16} color="#0ea5e9" style={styles.returnIcon} />
-              <Text style={styles.linkText}>Return to Login</Text>
-            </TouchableOpacity>
+            <View style={styles.returnToLogin}>
+              <Text style={styles.returnText}>Back to </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Login')}
+                disabled={loading}
+              >
+                <Text style={styles.linkText}>Sign In</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -122,7 +129,7 @@ const ForgotPassword = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0ea5e9',
+    backgroundColor: '#f8fafc', // Light neutral background
     paddingTop: Constants.statusBarHeight,
   },
   keyboardAvoidingView: {
@@ -130,62 +137,78 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
+    alignItems: 'center',
+    paddingVertical: 30,
   },
-  header: {
+  headerContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
+    width: '100%',
+  },
+  logoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
+    backgroundColor: '#e0f2fe',
+    borderRadius: 50,
+    padding: 12,
+    marginBottom: 12,
   },
-  backButton: {
-    padding: 8,
+  logoText: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#1e3a8a',
+    marginLeft: 8,
   },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    marginLeft: 16,
+  universityName: {
+    fontSize: 26,
+    fontWeight: '700',
+    color: '#1e3a8a',
+    textAlign: 'center',
+  },
+  tagline: {
+    fontSize: 16,
+    color: '#475569',
+    marginTop: 4,
   },
   formContainer: {
+    width: width * 0.9,
     backgroundColor: '#ffffff',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: Platform.OS === 'ios' ? 40 : 24,
-    marginTop: 10,
-    flex: 1,
-    minHeight: '80%',
+    borderRadius: 12,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#0f172a',
+  welcomeText: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#1e3a8a',
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
-    color: '#64748b',
-    marginBottom: 32,
+    color: '#475569',
+    marginBottom: 24,
   },
   inputGroup: {
-    marginBottom: 24,
+    marginBottom: 16,
   },
   label: {
     fontSize: 14,
-    color: '#0f172a',
-    marginBottom: 8,
+    color: '#1e3a8a',
     fontWeight: '600',
+    marginBottom: 8,
   },
   inputWithIcon: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#f8fafc',
-    borderRadius: 12,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: '#e2e8f0',
-    overflow: 'hidden',
-    height: Platform.OS === 'ios' ? 50 : 56,
+    height: 50,
   },
   inputIcon: {
     paddingHorizontal: 12,
@@ -194,43 +217,44 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     fontSize: 16,
-    color: '#0f172a',
+    color: '#1e3a8a',
     paddingVertical: 0,
   },
   button: {
-    backgroundColor: '#0ea5e9',
-    borderRadius: 12,
-    height: 56,
-    alignItems: 'center',
+    backgroundColor: '#1e3a8a',
+    borderRadius: 8,
+    height: 50,
+    flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 24,
-    shadowColor: '#0ea5e9',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
+    alignItems: 'center',
+    marginTop: 16,
   },
   buttonDisabled: {
-    backgroundColor: '#7dd3fc',
+    backgroundColor: '#64748b',
+    opacity: 0.7,
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: '600',
+    color: '#ffffff',
     fontSize: 16,
+    fontWeight: '600',
+  },
+  buttonIcon: {
+    marginLeft: 8,
   },
   returnToLogin: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
+    marginTop: 20,
   },
-  returnIcon: {
-    marginRight: 8,
+  returnText: {
+    fontSize: 14,
+    color: '#475569',
   },
   linkText: {
-    color: '#0ea5e9',
-    fontWeight: '600',
     fontSize: 14,
+    color: '#1e3a8a',
+    fontWeight: '600',
   },
 });
 

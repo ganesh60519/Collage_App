@@ -52,7 +52,7 @@ const Registration = ({ navigation }) => {
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        Alert.alert('Invalid Email Format', 'Please enter a valid university email address (e.g., name@university.edu).');
+        Alert.alert('Invalid Email Format', 'Please enter a valid university email address (e.g., name@mguniversity.edu).');
         setIsLoading(false);
         return;
       }
@@ -88,41 +88,39 @@ const Registration = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#22c55e" />
-      {/* Set the title for the screen - visible in some contexts */}
-      <Text style={{ height: 0, width: 0, opacity: 0 }}>Campus Connect - University Registration</Text>
-      <KeyboardAvoidingView 
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+      <Text style={{ height: 0, width: 0, opacity: 0 }}>Mahatma Gandhi University Registration</Text>
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoidingView}
       >
-        <ScrollView 
+        <ScrollView
           contentContainerStyle={styles.scrollContainer}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
           {/* Header Section */}
           <View style={styles.headerContainer}>
-            <TouchableOpacity 
-              style={styles.backButton}
-              onPress={() => navigation.goBack()}
-            >
-              <Ionicons name="arrow-back" size={24} color="#ffffff" />
-            </TouchableOpacity>
-            <View style={styles.headerContent}>
-              <Text style={styles.headerTitle}>University Registration</Text>
-              <Text style={styles.headerSubtitle}>Access your academic resources</Text>
+            <View style={styles.logoContainer}>
+              <Ionicons name="school-outline" size={50} color="#1e3a8a" />
+              <Text style={styles.logoText}>MGU</Text>
             </View>
+            <Text style={styles.universityName}>Mahatma Gandhi University</Text>
+            <Text style={styles.tagline}>Empowering Education</Text>
           </View>
 
           {/* Form Section */}
           <View style={styles.formContainer}>
+            <Text style={styles.welcomeText}>Create Your Account</Text>
+            <Text style={styles.subtitle}>Join the MGU academic portal</Text>
+
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Full Name</Text>
               <View style={styles.inputWithIcon}>
                 <Ionicons name="person-outline" size={20} color="#64748b" style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
-                  placeholder="Enter your legal full name"
+                  placeholder="Enter your full name"
                   value={name}
                   onChangeText={setName}
                   placeholderTextColor="#94a3b8"
@@ -133,12 +131,12 @@ const Registration = ({ navigation }) => {
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Email Address</Text>
+              <Text style={styles.label}>University Email</Text>
               <View style={styles.inputWithIcon}>
                 <Ionicons name="mail-outline" size={20} color="#64748b" style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
-                  placeholder="your.name@university.edu"
+                  placeholder="Enter your email"
                   value={email}
                   onChangeText={setEmail}
                   keyboardType="email-address"
@@ -162,15 +160,15 @@ const Registration = ({ navigation }) => {
                   placeholderTextColor="#94a3b8"
                   editable={!isLoading}
                 />
-                <TouchableOpacity 
+                <TouchableOpacity
                   style={styles.visibilityToggle}
                   onPress={() => setIsPasswordVisible(!isPasswordVisible)}
                   disabled={isLoading}
                 >
-                  <Ionicons 
-                    name={isPasswordVisible ? "eye-off-outline" : "eye-outline"} 
-                    size={20} 
-                    color="#64748b" 
+                  <Ionicons
+                    name={isPasswordVisible ? "eye-off-outline" : "eye-outline"}
+                    size={20}
+                    color="#64748b"
                   />
                 </TouchableOpacity>
               </View>
@@ -223,7 +221,7 @@ const Registration = ({ navigation }) => {
               </View>
             )}
 
-            <TouchableOpacity 
+            <TouchableOpacity
               style={[styles.registerButton, isLoading && styles.buttonDisabled]}
               onPress={handleRegister}
               disabled={isLoading}
@@ -233,25 +231,19 @@ const Registration = ({ navigation }) => {
                 <ActivityIndicator size="small" color="#ffffff" />
               ) : (
                 <>
-                  <Text style={styles.buttonText}>Register for Access</Text>
+                  <Text style={styles.buttonText}>Create Account</Text>
                   <Ionicons name="arrow-forward" size={20} color="#ffffff" style={styles.buttonIcon} />
                 </>
               )}
             </TouchableOpacity>
 
-            <View style={styles.divider}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>EXISTING USER?</Text>
-              <View style={styles.dividerLine} />
-            </View>
-
             <View style={styles.loginRedirectContainer}>
-              <Text style={styles.loginRedirectText}>Already registered with the university? </Text>
-              <TouchableOpacity 
+              <Text style={styles.loginRedirectText}>Already have an account? </Text>
+              <TouchableOpacity
                 onPress={() => navigation.navigate('Login')}
                 disabled={isLoading}
               >
-                <Text style={styles.loginLink}>Login Here</Text>
+                <Text style={styles.loginLink}>Sign In</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -264,7 +256,7 @@ const Registration = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#22c55e', // Green background
+    backgroundColor: '#f8fafc', // Light neutral background
     paddingTop: Constants.statusBarHeight,
   },
   keyboardAvoidingView: {
@@ -272,51 +264,67 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 20,
+    alignItems: 'center',
+    paddingإأpaddingVertical: 30,
   },
   headerContainer: {
-    paddingHorizontal: 24,
-    paddingTop: 20,
-    paddingBottom: 30,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 30,
+    width: '100%',
   },
-  headerContent: {
-    marginBottom: 10,
+  logoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#e0f2fe',
+    borderRadius: 50,
+    padding: 12,
+    marginBottom: 12,
   },
-  headerTitle: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    marginBottom: 8,
+  logoText: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#1e3a8a',
+    marginLeft: 8,
   },
-  headerSubtitle: {
+  universityName: {
+    fontSize: 26,
+    fontWeight: '700',
+    color: '#1e3a8a',
+    textAlign: 'center',
+  },
+  tagline: {
     fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: '#475569',
+    marginTop: 4,
   },
   formContainer: {
+    width: width * 0.9,
     backgroundColor: '#ffffff',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: Platform.OS === 'ios' ? 40 : 24,
-    flex: 1,
-    minHeight: height * 0.65, // Ensure form takes at least 65% of screen height
+    borderRadius: 12,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  welcomeText: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#1e3a8a',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#475569',
+    marginBottom: 24,
   },
   inputGroup: {
     marginBottom: 16,
   },
   label: {
     fontSize: 14,
-    color: '#0f172a',
+    color: '#1e3a8a',
     fontWeight: '600',
     marginBottom: 8,
   },
@@ -324,11 +332,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#f8fafc',
-    borderRadius: 12,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: '#e2e8f0',
-    overflow: 'hidden',
-    height: Platform.OS === 'ios' ? 50 : 56,
+    height: 50,
   },
   inputIcon: {
     paddingHorizontal: 12,
@@ -337,8 +344,8 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     fontSize: 16,
-    color: '#0f172a',
-    paddingVertical: 0, // Remove vertical padding to fix alignment
+    color: '#1e3a8a',
+    paddingVertical: 0,
   },
   visibilityToggle: {
     paddingHorizontal: 12,
@@ -349,37 +356,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#f8fafc',
-    borderRadius: 12,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: '#e2e8f0',
-    overflow: 'hidden',
-    height: Platform.OS === 'ios' ? 50 : 56,
+    height: 50,
   },
   pickerWrapper: {
     flex: 1,
     height: '100%',
   },
   picker: {
-    height: Platform.OS === 'android' ? 56 : 150,
+    height: 50,
     width: '100%',
-    color: '#0f172a',
+    color: '#1e3a8a',
   },
   registerButton: {
-    backgroundColor: '#22c55e',
-    borderRadius: 12,
-    height: 56,
+    backgroundColor: '#1e3a8a',
+    borderRadius: 8,
+    height: 50,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 16,
-    shadowColor: '#22c55e',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
   },
   buttonDisabled: {
-    backgroundColor: '#86efac',
+    backgroundColor: '#64748b',
     opacity: 0.7,
   },
   buttonText: {
@@ -390,34 +391,19 @@ const styles = StyleSheet.create({
   buttonIcon: {
     marginLeft: 8,
   },
-  divider: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 24,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#e2e8f0',
-  },
-  dividerText: {
-    color: '#64748b',
-    paddingHorizontal: 16,
-    fontSize: 14,
-  },
   loginRedirectContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 8, // Add padding for better touch target
+    marginTop: 20,
   },
   loginRedirectText: {
-    color: '#64748b',
     fontSize: 14,
+    color: '#475569',
   },
   loginLink: {
-    color: '#22c55e',
     fontSize: 14,
+    color: '#1e3a8a',
     fontWeight: '600',
   },
 });

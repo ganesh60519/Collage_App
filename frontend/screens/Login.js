@@ -33,7 +33,6 @@ const Login = ({ navigation }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState(null);
 
-  
   const checkServerConnection = async () => {
     try {
       setConnectionStatus('checking');
@@ -65,7 +64,6 @@ const Login = ({ navigation }) => {
     try {
       setLoading(true);
       
-      // Input validation with specific error messages
       if (!email && !password) {
         Alert.alert(
           'Missing Information', 
@@ -93,12 +91,11 @@ const Login = ({ navigation }) => {
         return;
       }
       
-      // Basic email format validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         Alert.alert(
           'Invalid Email Format', 
-          'Please enter a valid email address (e.g., student@university.edu).'
+          'Please enter a valid email address (e.g., student@mguniversity.edu).'
         );
         setLoading(false);
         return;
@@ -113,14 +110,10 @@ const Login = ({ navigation }) => {
           const response = await apiService.login(email, password, role);
 
           if (response.data.token) {
-            // Store authentication data
             await AsyncStorage.setItem('token', response.data.token);
             await AsyncStorage.setItem('userRole', role);
-            
-            // Store login timestamp for token expiration handling
             await AsyncStorage.setItem('loginTime', Date.now().toString());
 
-            // Navigate to appropriate dashboard
             navigation.replace(
               role === 'student'
                 ? 'StudentDashboard'
@@ -139,7 +132,6 @@ const Login = ({ navigation }) => {
       }
 
       if (!loginSuccess) {
-        // Check for specific error conditions
         if (lastError?.response?.status === 401) {
           Alert.alert(
             'Authentication Failed', 
@@ -165,7 +157,6 @@ const Login = ({ navigation }) => {
     } catch (error) {
       console.error('Login error:', error);
       
-      // Enhanced network error handling
       if (error.message && (
           error.message.includes('Network Error') || 
           error.message.includes('connect') ||
@@ -181,13 +172,11 @@ const Login = ({ navigation }) => {
           'Technical details: ' + error.message
         );
       } else if (error.response) {
-        // Server returned an error response
         Alert.alert(
           'Server Error', 
           `Error code: ${error.response.status}. Please try again later or contact support.`
         );
       } else {
-        // Generic error handling
         Alert.alert(
           'Login Error', 
           'An unexpected error occurred. Please try again later or contact the IT helpdesk.\n\n' +
@@ -201,9 +190,8 @@ const Login = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#0ea5e9" />
-      {/* Set the title for the screen - visible in some contexts */}
-      <Text style={{ height: 0, width: 0, opacity: 0 }}>Campus Connect - University Portal</Text>
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+      <Text style={{ height: 0, width: 0, opacity: 0 }}>Mahatma Gandhi University Portal</Text>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoidingView}
@@ -213,40 +201,42 @@ const Login = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Logo and Header Section */}
-          <View style={styles.logoContainer}>
-            <View style={styles.logoCircle}>
-              <Text style={styles.logoText}>UNI</Text>
+          {/* Header Section */}
+          <View style={styles.headerContainer}>
+            <View style={styles.logoContainer}>
+              <Ionicons name="school-outline" size={50} color="#1e3a8a" />
+              <Text style={styles.logoText}>MGU</Text>
             </View>
-            <Text style={styles.appName}>Campus Connect</Text>
-            <Text style={styles.appTagline}>Your Complete University Portal</Text>
+            <Text style={styles.universityName}>Mahatma Gandhi University</Text>
+            <Text style={styles.tagline}>Empowering Education</Text>
           </View>
 
-          {/* Login Form Section */}
+          {/* Form Section */}
           <View style={styles.formContainer}>
-            <Text style={styles.title}>Welcome to Campus Connect</Text>
-            <Text style={styles.subtitle}>Access your academic portal</Text>
+            <Text style={styles.welcomeText}>Welcome Back</Text>
+            <Text style={styles.subtitle}>Sign in to your university portal</Text>
 
             <FormInput
-              label="Email"
+              label="University Email"
               value={email}
               onChangeText={setEmail}
-              placeholder="University email address"
+              placeholder="Enter your email "
               iconName="mail-outline"
               keyboardType="email-address"
               autoCapitalize="none"
               editable={!loading}
-              accessibilityLabel="Email input field"
-              accessibilityHint="Enter your university email address"
+              accessibilityLabel="University email input field"
+              accessibilityHint="Enter your Mahatma Gandhi University email address"
               textContentType="emailAddress"
               autoCompleteType="email"
+              style={styles.input}
             />
 
             <FormInput
               label="Password"
               value={password}
               onChangeText={setPassword}
-              placeholder="Your secure password"
+              placeholder="Enter your password"
               iconName="lock-closed-outline"
               secureTextEntry={true}
               isSecureTextVisible={isPasswordVisible}
@@ -256,59 +246,56 @@ const Login = ({ navigation }) => {
               accessibilityHint="Enter your secure password"
               textContentType="password"
               autoCompleteType="password"
+              style={styles.input}
             />
 
             <TextLink
-              text="Reset University Password"
+              text="Forgot Password?"
               onPress={() => navigation.navigate('ForgotPassword')}
               disabled={loading}
-              accessibilityLabel="Reset University Password"
+              accessibilityLabel="Forgot Password"
               accessibilityHint="Navigate to password reset screen"
               style={styles.forgotPassword}
             />
 
             <PrimaryButton
-              title="Access Portal"
+              title="Sign In"
               onPress={handleLogin}
               isLoading={loading}
               iconName="arrow-forward"
-              accessibilityLabel="Access Portal"
-              accessibilityHint="Log in to your university account"
+              accessibilityLabel="Sign In"
+              accessibilityHint="Log in to your Mahatma Gandhi University account"
+              style={styles.signInButton}
             />
 
-            <View style={styles.divider}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>NEW USER?</Text>
-              <View style={styles.dividerLine} />
-            </View>
-
-            <View style={styles.register}>
-              <Text style={styles.registerText}>First time accessing the portal? </Text>
+            <View style={styles.registerContainer}>
+              <Text style={styles.registerText}>New to MGU Portal? </Text>
               <TextLink
-                text="Register Here"
+                text="Create Account"
                 onPress={() => navigation.navigate('Registration')}
                 disabled={loading}
-                accessibilityLabel="Register Here"
+                accessibilityLabel="Create Account"
                 accessibilityHint="Navigate to registration screen"
               />
             </View>
-            
-            {/* Connection test button */}
-{/* 
-<TouchableOpacity 
-  style={styles.connectionTestButton} 
-  onPress={checkServerConnection}
-  disabled={loading || connectionStatus === 'checking'}
->
-  <Text style={styles.connectionTestText}>
-    {connectionStatus === 'checking' ? 'Testing Connection...' : 
-     connectionStatus === 'connected' ? 'Connection OK ✓' : 
-     connectionStatus === 'failed' ? 'Connection Failed ✗' : 
-     'Test Server Connection'}
-  </Text>
-  <Text style={styles.serverInfo}>Server: {IP}:3000</Text>
-</TouchableOpacity>
-*/}
+
+            <TouchableOpacity 
+              style={[
+                styles.connectionTestButton,
+                connectionStatus === 'connected' && styles.connectedButton,
+                connectionStatus === 'failed' && styles.failedButton
+              ]} 
+              onPress={checkServerConnection}
+              disabled={loading || connectionStatus === 'checking'}
+            >
+              <Text style={styles.connectionTestText}>
+                {connectionStatus === 'checking' ? 'Checking Connection...' : 
+                 connectionStatus === 'connected' ? 'Connected ✓' : 
+                 connectionStatus === 'failed' ? 'Connection Failed ✗' : 
+                 'Test Connection'}
+              </Text>
+              <Text style={styles.serverInfo}>Server: {IP}:3000</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -319,7 +306,7 @@ const Login = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0ea5e9', // Bright blue background
+    backgroundColor: '#f8fafc', // Light neutral background
     paddingTop: Constants.statusBarHeight,
   },
   keyboardAvoidingView: {
@@ -327,96 +314,81 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingVertical: 20,
+    alignItems: 'center',
+    paddingVertical: 30,
+  },
+  headerContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
   },
   logoContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
-    paddingTop: 20,
-    paddingHorizontal: 20,
-  },
-  logoCircle: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 5,
+    backgroundColor: '#e0f2fe',
+    borderRadius: 50,
+    padding: 12,
+    marginBottom: 12,
   },
   logoText: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#0ea5e9',
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#1e3a8a',
+    marginLeft: 8,
   },
-  appName: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    marginBottom: 8,
+  universityName: {
+    fontSize: 26,
+    fontWeight: '700',
+    color: '#1e3a8a',
+    textAlign: 'center',
   },
-  appTagline: {
+  tagline: {
     fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: '#475569',
+    marginTop: 4,
   },
   formContainer: {
+    width: width * 0.9,
     backgroundColor: '#ffffff',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: Platform.OS === 'ios' ? 40 : 24,
-    marginTop: 10,
-    flex: 1,
-    minHeight: height * 0.65, // Ensure form takes at least 65% of screen height
+    borderRadius: 12,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#0f172a',
+  welcomeText: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#1e3a8a',
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
-    color: '#334155', // Darker color for better visibility (changed from #64748b)
+    color: '#475569',
     marginBottom: 24,
-    fontWeight: '500', // Added font weight for better readability
   },
-  // These styles are now handled by the reusable components
+  input: {
+    marginBottom: 16,
+  },
   forgotPassword: {
     alignSelf: 'flex-end',
-    marginBottom: 24,
+    marginBottom: 20,
   },
-  divider: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 24,
+  signInButton: {
+    marginTop: 8,
+    backgroundColor: '#1e3a8a',
+    borderRadius: 8,
+    paddingVertical: 14,
   },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#e2e8f0',
-  },
-  dividerText: {
-    color: '#334155', // Darker color for better visibility (changed from #64748b)
-    paddingHorizontal: 16,
-    fontSize: 14,
-    fontWeight: '600', // Added font weight for better readability
-  },
-  register: {
+  registerContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingVertical: 8, // Add padding for better touch target
+    marginTop: 16,
   },
   registerText: {
-    color: '#334155', // Darker color for better visibility (changed from #64748b)
     fontSize: 14,
-    fontWeight: '500', // Added font weight for better readability
+    color: '#475569',
   },
   connectionTestButton: {
     marginTop: 20,
@@ -427,14 +399,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e2e8f0',
   },
+  connectedButton: {
+    backgroundColor: '#dcfce7',
+    borderColor: '#16a34a',
+  },
+  failedButton: {
+    backgroundColor: '#fee2e2',
+    borderColor: '#dc2626',
+  },
   connectionTestText: {
-    color: '#0f172a',
     fontSize: 14,
     fontWeight: '600',
+    color: '#1e3a8a',
   },
   serverInfo: {
-    color: '#64748b',
     fontSize: 12,
+    color: '#64748b',
     marginTop: 4,
   },
 });

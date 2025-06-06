@@ -31,7 +31,6 @@ import axios from 'axios';
 import { IP } from '../../ip';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import ResumeScreen from './ResumeScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -319,12 +318,6 @@ const HomeScreen = () => {
               </View>
               <Text style={styles.modernQuickActionText}>Support</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.modernQuickActionItem} onPress={() => navigation.getParent().navigate('ViewResume')}>
-              <View style={[styles.modernQuickActionIcon, { backgroundColor: '#fef3c7' }]}> 
-                <MaterialIcons name="article" size={28} color="#f59e0b" />
-              </View>
-              <Text style={styles.modernQuickActionText}>Resume</Text>
-            </TouchableOpacity>
             <TouchableOpacity style={styles.modernQuickActionItem} onPress={() => navigation.jumpTo('Profile')}>
               <View style={[styles.modernQuickActionIcon, { backgroundColor: '#f3e8ff' }]}> 
                 <MaterialIcons name="person" size={28} color="#8b5cf6" />
@@ -332,6 +325,22 @@ const HomeScreen = () => {
               <Text style={styles.modernQuickActionText}>Profile</Text>
             </TouchableOpacity>
           </View>
+        </AnimatedCard>
+
+        {/* Resume Generate Card */}
+        <AnimatedCard delay={500} style={styles.modernOverviewCard}>
+          <TouchableOpacity
+            style={{ alignItems: 'center', flexDirection: 'row' }}
+            onPress={() => navigation.getParent().navigate('GenerateResume')}
+          >
+            <View style={[styles.modernStatIcon, { backgroundColor: '#fef3c7', marginRight: 16 }]}>
+              <MaterialIcons name="article" size={32} color="#f59e0b" />
+            </View>
+            <View>
+              <Text style={{ fontSize: 18, fontWeight: '700', color: '#1e293b' }}>Generate Resume</Text>
+              <Text style={{ fontSize: 14, color: '#64748b', marginTop: 2 }}>Create or update your resume</Text>
+            </View>
+          </TouchableOpacity>
         </AnimatedCard>
 
         {/* Recent Activity (reuse modernActivityCard if needed) */}
@@ -1580,34 +1589,35 @@ const ProfileScreen = () => {
               <Text style={styles.profileInfoLabel}>Branch/Department</Text>
               <Text style={styles.profileInfoValue}>{profile?.branch || 'Not available'}</Text>
             </View>
-          </View>        {/* Profile Update Actions - Move to Student Information Card */}
-        {ticketStatus === 'pending' ? (
-          <View style={styles.profileActionButton}>
-            <View style={[styles.profileActionIconContainer, {backgroundColor: '#fef3c7'}]}>
-              <MaterialIcons name="hourglass-empty" size={20} color="#f59e0b" />
-            </View>
-            <View style={styles.profileInfoContent}>
-              <Text style={styles.profileActionText}>Update Request Pending</Text>
-              <Text style={styles.profileInfoLabel}>Being reviewed by administration</Text>
-            </View>
           </View>
-        ) : ticketStatus === 'approved' ? (
-          <TouchableOpacity style={styles.profileActionButton} onPress={handleUpdateProfile}>
-            <View style={[styles.profileActionIconContainer, {backgroundColor: '#dcfce7'}]}>
-              <MaterialIcons name="check-circle" size={20} color="#10b981" />
+          {/* Profile Update Actions - Move to Student Information Card */}
+          {ticketStatus === 'pending' ? (
+            <View style={styles.profileActionButton}>
+              <View style={[styles.profileActionIconContainer, {backgroundColor: '#fef3c7'}]}>
+                <MaterialIcons name="hourglass-empty" size={20} color="#f59e0b" />
+              </View>
+              <View style={styles.profileInfoContent}>
+                <Text style={styles.profileActionText}>Update Request Pending</Text>
+                <Text style={styles.profileInfoLabel}>Being reviewed by administration</Text>
+              </View>
             </View>
-            <Text style={styles.profileActionText}>Update Profile Now</Text>
-            <MaterialIcons name="chevron-right" size={20} color="#9ca3af" />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={styles.profileActionButton} onPress={handleRaiseTicket}>
-            <View style={styles.profileActionIconContainer}>
-              <MaterialIcons name="edit" size={20} color="#3b82f6" />
-            </View>
-            <Text style={styles.profileActionText}>Request Profile Update</Text>
-            <MaterialIcons name="chevron-right" size={20} color="#9ca3af" />
-          </TouchableOpacity>
-        )}
+          ) : ticketStatus === 'approved' ? (
+            <TouchableOpacity style={styles.profileActionButton} onPress={handleUpdateProfile}>
+              <View style={[styles.profileActionIconContainer, {backgroundColor: '#dcfce7'}]}>
+                <MaterialIcons name="check-circle" size={20} color="#10b981" />
+              </View>
+              <Text style={styles.profileActionText}>Update Profile Now</Text>
+              <MaterialIcons name="chevron-right" size={20} color="#9ca3af" />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.profileActionButton} onPress={handleRaiseTicket}>
+              <View style={styles.profileActionIconContainer}>
+                <MaterialIcons name="edit" size={20} color="#3b82f6" />
+              </View>
+              <Text style={styles.profileActionText}>Request Profile Update</Text>
+              <MaterialIcons name="chevron-right" size={20} color="#9ca3af" />
+            </TouchableOpacity>
+          )}
         </AnimatedCard>
         {/* Account Actions Card - Admin Style */}
         <AnimatedCard delay={200} style={styles.profileActionsCard}>
@@ -1702,7 +1712,8 @@ const StudentDashboard = () => {
         component={HomeScreen} 
         options={{ 
           title: 'Dashboard',
-          headerShown: false, // Hide header only for Home screen
+          headerShown: false,
+          tabBarLabel: 'Dashboard',
           tabBarIcon: ({ focused, color, size }) => {
             const iconName = focused ? 'home' : 'home-outline';
             return <Ionicons name={iconName} size={size} color={color} />;
@@ -1759,33 +1770,6 @@ const StudentDashboard = () => {
           },
           tabBarIcon: ({ focused, color, size }) => {
             return <MaterialIcons name="confirmation-number" size={size} color={color} />;
-          }
-        }} 
-      />
-      <Tab.Screen 
-        name="Resume" 
-        component={ResumeScreen} 
-        options={{ 
-          title: 'My Resume',
-          headerStyle: {
-            backgroundColor: '#4a6fa5',
-            elevation: 8,
-            shadowColor: '#6b8cce',
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.2,
-            shadowRadius: 8,
-            height: 75,
-            borderBottomWidth: 0,
-          },
-          headerTitleStyle: {
-            fontSize: 22,
-            fontWeight: '700',
-            color: '#ffffff',
-            letterSpacing: 0.5,
-          },
-          tabBarIcon: ({ focused, color, size }) => {
-            const iconName = focused ? 'document-text' : 'document-text-outline';
-            return <Ionicons name={iconName} size={size} color={color} />;
           }
         }} 
       />
@@ -2108,6 +2092,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   modernQuickActionSubtext: {
+
     fontSize: 12,
     color: '#64748b',
     fontWeight: '500',
@@ -2685,6 +2670,8 @@ const styles = StyleSheet.create({
   taskPriorityIndicator: {
     width: 6,
     height: '100%',
+    borderRadius: 3,
+    marginRight: 14,
   },
   taskCardContent: {
     flex: 1,
@@ -3576,5 +3563,3 @@ const styles = StyleSheet.create({
 
 
 export default StudentDashboard;
-
-
