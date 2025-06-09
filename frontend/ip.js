@@ -5,7 +5,7 @@ let serverIP = '192.168.29.145';
 if (__DEV__) {
   // You can set a different IP for development if needed
   // For example, using localhost for web or your machine's IP for device testing
-  console.log('Running in development mode');
+  //console.log('Running in development mode');
   
   // For local development, you might want to use localhost or your machine's actual IP
   // Uncomment and modify one of these lines if needed:
@@ -20,17 +20,17 @@ if (process.env.REACT_NATIVE_SERVER_IP) {
 }
 
 export const IP = serverIP;
-console.log(`App connecting to server at: ${IP}`);
+//console.log(`App connecting to server at: ${IP}`);
 
 // Add a function to test the connection to the server
 export const testServerConnection = async () => {
   try {
     const response = await fetch(`http://${IP}:3000/api/test`);
     const data = await response.json();
-    console.log('Server connection test result:', data);
+    //console.log('Server connection test result:', data);
     return { success: true, data };
   } catch (error) {
-    console.error('Server connection test failed:', error.message);
+    //console.error('Server connection test failed:', error.message);
     return { success: false, error: error.message };
   }
 };

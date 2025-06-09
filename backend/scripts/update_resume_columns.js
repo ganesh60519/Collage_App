@@ -31,14 +31,14 @@ async function updateResumeColumns() {
 
     // Verify the updated structure
     const [columns] = await connection.execute('DESCRIBE resumes');
-    console.log('Updated resume table columns:');
+    //console.log('Updated resume table columns:');
     columns.forEach(col => {
-      console.log(`- ${col.Field} (${col.Type})`);
+      //console.log(`- ${col.Field} (${col.Type})`);
     });
 
-    console.log('Resume table updated successfully');
+    //console.log('Resume table updated successfully');
   } catch (error) {
-    console.error('Error updating resume table:', error);
+    //console.error('Error updating resume table:', error);
   } finally {
     if (connection) {
       await connection.end();

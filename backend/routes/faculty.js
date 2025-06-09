@@ -95,7 +95,7 @@ router.post('/assign-task', auth, async (req, res) => {
     );
     res.status(201).json({ message: 'Task assigned successfully' });
   } catch (error) {
-    console.error('Task assignment error:', error);
+    //console.error('Task assignment error:', error);
     res.status(500).json({ 
       error: 'Failed to assign task', 
       details: error.message 
@@ -113,7 +113,7 @@ router.post('/assign-self-task', auth, async (req, res) => {
   }
 
   try {
-    console.log(`Faculty ${faculty_id} assigning task to self with data:`, req.body);
+    //console.log(`Faculty ${faculty_id} assigning task to self with data:`, req.body);
     
     // Insert task with faculty as both assigner and assignee
     await db.execute(
@@ -123,7 +123,7 @@ router.post('/assign-self-task', auth, async (req, res) => {
     
     res.status(201).json({ message: 'Task assigned to self successfully' });
   } catch (error) {
-    console.error('Self task assignment error:', error);
+    //console.error('Self task assignment error:', error);
     res.status(500).json({ 
       error: 'Failed to assign task to self', 
       details: error.message 
@@ -141,7 +141,7 @@ router.post('/assign-self-task', auth, async (req, res) => {
 
   try {
     const faculty_id = req.user.id;
-    console.log(`Faculty ${faculty_id} assigning task to self: ${title}`);
+    //console.log(`Faculty ${faculty_id} assigning task to self: ${title}`);
     
     // Insert task with faculty as both assigner and assignee
     const [result] = await db.execute(
@@ -149,13 +149,13 @@ router.post('/assign-self-task', auth, async (req, res) => {
       [title, description, faculty_id, due_date, faculty_id]
     );
     
-    console.log(`Self-assigned task created with ID: ${result.insertId}`);
+    //console.log(`Self-assigned task created with ID: ${result.insertId}`);
     res.status(201).json({ 
       message: 'Task self-assigned successfully',
       task_id: result.insertId
     });
   } catch (error) {
-    console.error('Self task assignment error:', error);
+    //console.error('Self task assignment error:', error);
     res.status(500).json({ 
       error: 'Failed to self-assign task', 
       details: error.message 
@@ -169,7 +169,7 @@ router.get('/tasks', auth, async (req, res) => {
     const taskType = req.query.type || 'assigned'; // 'assigned' or 'self'
     const faculty_id = req.user.id;
     
-    console.log(`Fetching ${taskType} tasks for faculty ID: ${faculty_id}`);
+    //console.log(`Fetching ${taskType} tasks for faculty ID: ${faculty_id}`);
     
     let query, params;
     
@@ -187,14 +187,14 @@ router.get('/tasks', auth, async (req, res) => {
     
     // Log the first task for debugging
     if (tasks.length > 0) {
-      console.log(`Faculty API - First ${taskType} task details:`, JSON.stringify(tasks[0], null, 2));
+      //console.log(`Faculty API - First ${taskType} task details:`, JSON.stringify(tasks[0], null, 2));
     } else {
-      console.log(`No ${taskType} tasks found for faculty ID: ${faculty_id}`);
+      //console.log(`No ${taskType} tasks found for faculty ID: ${faculty_id}`);
     }
     
     res.json(tasks || []); // Return empty array if no tasks
   } catch (error) {
-    console.error(`Error fetching ${req.query.type || 'assigned'} tasks:`, error);
+    //console.error(`Error fetching ${req.query.type || 'assigned'} tasks:`, error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -210,7 +210,7 @@ router.post('/assign-self-task', auth, async (req, res) => {
       return res.status(400).json({ error: 'Title, description, and due date are required' });
     }
     
-    console.log(`Faculty ${faculty_id} assigning task to self with data:`, req.body);
+    //console.log(`Faculty ${faculty_id} assigning task to self with data:`, req.body);
     
     // Insert task with faculty as both assigner and assignee
     const [result] = await db.execute(
@@ -218,14 +218,14 @@ router.post('/assign-self-task', auth, async (req, res) => {
       [title, description, faculty_id, due_date, faculty_id, priority || 'medium']
     );
     
-    console.log(`Self-assigned task created with ID: ${result.insertId}`);
+    //console.log(`Self-assigned task created with ID: ${result.insertId}`);
     
     res.status(201).json({ 
       id: result.insertId,
       message: 'Task assigned to self successfully' 
     });
   } catch (error) {
-    console.error('Error assigning self task:', error);
+    //console.error('Error assigning self task:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -234,7 +234,7 @@ router.post('/assign-self-task', auth, async (req, res) => {
 router.get('/self-tasks', auth, async (req, res) => {
   try {
     const faculty_id = req.user.id;
-    console.log(`Fetching self-assigned tasks for faculty ID: ${faculty_id}`);
+    //console.log(`Fetching self-assigned tasks for faculty ID: ${faculty_id}`);
     
     const [tasks] = await db.execute(
       'SELECT t.*, f.name AS faculty_name FROM tasks t LEFT JOIN faculty f ON t.assigned_to = f.id WHERE t.assigned_role = "faculty" AND t.assigned_to = ?',
@@ -243,14 +243,14 @@ router.get('/self-tasks', auth, async (req, res) => {
     
     // Log the first task for debugging
     if (tasks.length > 0) {
-      console.log('Faculty API - First self-assigned task details:', JSON.stringify(tasks[0], null, 2));
+      //console.log('Faculty API - First self-assigned task details:', JSON.stringify(tasks[0], null, 2));
     } else {
-      console.log('No self-assigned tasks found for faculty ID:', faculty_id);
+      //console.log('No self-assigned tasks found for faculty ID:', faculty_id);
     }
     
     res.json(tasks || []); // Return empty array if no tasks
   } catch (error) {
-    console.error('Error fetching self-assigned tasks:', error);
+    //console.error('Error fetching self-assigned tasks:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -259,7 +259,7 @@ router.get('/self-tasks', auth, async (req, res) => {
 router.get('/tasks/:id', auth, async (req, res) => {
   try {
     const taskId = req.params.id;
-    console.log(`Fetching details for task ID: ${taskId}`);
+    //console.log(`Fetching details for task ID: ${taskId}`);
     
     const [tasks] = await db.execute(
       'SELECT t.*, s.name AS student_name FROM tasks t LEFT JOIN students s ON t.assigned_to = s.id WHERE t.id = ? AND t.assigned_by = ?',
@@ -267,14 +267,14 @@ router.get('/tasks/:id', auth, async (req, res) => {
     );
     
     if (tasks.length === 0) {
-      console.log(`Task not found or not assigned by faculty ID: ${req.user.id}`);
+      //console.log(`Task not found or not assigned by faculty ID: ${req.user.id}`);
       return res.status(404).json({ error: 'Task not found' });
     }
     
-    console.log('Task details:', JSON.stringify(tasks[0], null, 2));
+    //console.log('Task details:', JSON.stringify(tasks[0], null, 2));
     res.json(tasks[0]);
   } catch (error) {
-    console.error('Error fetching task details:', error);
+    //console.error('Error fetching task details:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -301,7 +301,7 @@ router.post('/refresh-token', auth, async (req, res) => {
     
     res.json({ token });
   } catch (error) {
-    console.error('Error refreshing token:', error);
+    //console.error('Error refreshing token:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -310,7 +310,7 @@ router.post('/refresh-token', auth, async (req, res) => {
 router.get('/self-tasks', auth, async (req, res) => {
   try {
     const faculty_id = req.user.id;
-    console.log(`Fetching self-assigned tasks for faculty ID: ${faculty_id}`);
+    //console.log(`Fetching self-assigned tasks for faculty ID: ${faculty_id}`);
     
     const [tasks] = await db.execute(
       'SELECT t.*, f.name AS faculty_name FROM tasks t LEFT JOIN faculty f ON t.assigned_to = f.id WHERE t.assigned_role = "faculty" AND t.assigned_to = ?',
@@ -319,14 +319,14 @@ router.get('/self-tasks', auth, async (req, res) => {
     
     // Log the first task for debugging
     if (tasks.length > 0) {
-      console.log('Faculty API - First self-assigned task details:', JSON.stringify(tasks[0], null, 2));
+      //console.log('Faculty API - First self-assigned task details:', JSON.stringify(tasks[0], null, 2));
     } else {
-      console.log('No self-assigned tasks found for faculty ID:', faculty_id);
+      //console.log('No self-assigned tasks found for faculty ID:', faculty_id);
     }
     
     res.json(tasks || []); // Return empty array if no tasks
   } catch (error) {
-    console.error('Error fetching self-assigned tasks:', error);
+    //console.error('Error fetching self-assigned tasks:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -337,7 +337,7 @@ router.get('/self-tasks/:id', auth, async (req, res) => {
     const taskId = req.params.id;
     const faculty_id = req.user.id;
     
-    console.log(`Fetching self-assigned task ${taskId} for faculty ${faculty_id}`);
+    //console.log(`Fetching self-assigned task ${taskId} for faculty ${faculty_id}`);
     
     // Get task details
     const [tasks] = await db.execute(
@@ -346,14 +346,14 @@ router.get('/self-tasks/:id', auth, async (req, res) => {
     );
     
     if (tasks.length === 0) {
-      console.log(`Self-assigned task ${taskId} not found for faculty ${faculty_id}`);
+      //console.log(`Self-assigned task ${taskId} not found for faculty ${faculty_id}`);
       return res.status(404).json({ error: 'Self-assigned task not found' });
     }
     
-    console.log(`Found self-assigned task:`, JSON.stringify(tasks[0], null, 2));
+    //console.log(`Found self-assigned task:`, JSON.stringify(tasks[0], null, 2));
     res.json(tasks[0]);
   } catch (error) {
-    console.error('Error fetching self-assigned task:', error);
+    //console.error('Error fetching self-assigned task:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -365,7 +365,7 @@ router.put('/self-tasks/:id/status', auth, async (req, res) => {
     const { status } = req.body;
     const faculty_id = req.user.id;
     
-    console.log(`Faculty ${faculty_id} updating self-assigned task ${taskId} status to ${status}`);
+    //console.log(`Faculty ${faculty_id} updating self-assigned task ${taskId} status to ${status}`);
     
     if (!status || !['pending', 'completed'].includes(status)) {
       return res.status(400).json({ error: 'Invalid status value' });
@@ -387,8 +387,8 @@ router.put('/self-tasks/:id/status', auth, async (req, res) => {
       [status, taskId]
     );
     
-    console.log(`Self-assigned task ${taskId} status updated to ${status}`);
-    console.log('Update result:', JSON.stringify(updateResult, null, 2));
+    //console.log(`Self-assigned task ${taskId} status updated to ${status}`);
+    //console.log('Update result:', JSON.stringify(updateResult, null, 2));
     
     res.json({ 
       success: true, 
@@ -397,7 +397,7 @@ router.put('/self-tasks/:id/status', auth, async (req, res) => {
       new_status: status
     });
   } catch (error) {
-    console.error('Error updating self-assigned task status:', error);
+    //console.error('Error updating self-assigned task status:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -409,8 +409,8 @@ router.put('/self-tasks/:id/link', auth, async (req, res) => {
     const { link } = req.body;
     const faculty_id = req.user.id;
     
-    console.log(`Faculty ${faculty_id} updating self-assigned task ${taskId} link`);
-    console.log(`New link: ${link}`);
+    //console.log(`Faculty ${faculty_id} updating self-assigned task ${taskId} link`);
+    //console.log(`New link: ${link}`);
     
     // Verify the task exists and is assigned to this faculty
     const [tasks] = await db.execute(
@@ -428,8 +428,8 @@ router.put('/self-tasks/:id/link', auth, async (req, res) => {
       [link, taskId]
     );
     
-    console.log(`Self-assigned task ${taskId} link updated`);
-    console.log('Update result:', JSON.stringify(updateResult, null, 2));
+    //console.log(`Self-assigned task ${taskId} link updated`);
+    //console.log('Update result:', JSON.stringify(updateResult, null, 2));
     
     res.json({ 
       success: true, 
@@ -437,7 +437,7 @@ router.put('/self-tasks/:id/link', auth, async (req, res) => {
       task_id: taskId
     });
   } catch (error) {
-    console.error('Error updating self-assigned task link:', error);
+    //console.error('Error updating self-assigned task link:', error);
     res.status(500).json({ error: error.message });
   }
 });

@@ -2,7 +2,7 @@ const mysql = require('mysql2/promise');
 require('dotenv').config();
 
 async function checkTaskLinks() {
-  console.log('Checking task links in database...');
+  //console.log('Checking task links in database...');
   
   // Create a connection to the database
   const connection = await mysql.createConnection({
@@ -22,9 +22,9 @@ async function checkTaskLinks() {
       ORDER BY ORDINAL_POSITION
     `);
     
-    console.log('Columns in tasks table:');
+    //console.log('Columns in tasks table:');
     columns.forEach(column => {
-      console.log(`- ${column.COLUMN_NAME}`);
+      //console.log(`- ${column.COLUMN_NAME}`);
     });
     
     // Get all tasks with their link values
@@ -34,9 +34,9 @@ async function checkTaskLinks() {
       ORDER BY id
     `);
     
-    console.log('\nTasks with their link values:');
+    //console.log('\nTasks with their link values:');
     tasks.forEach(task => {
-      console.log(`Task ID: ${task.id}, Title: ${task.title}, Link: ${task.link === null ? 'NULL' : task.link}`);
+      //console.log(`Task ID: ${task.id}, Title: ${task.title}, Link: ${task.link === null ? 'NULL' : task.link}`);
     });
     
     // Count tasks with non-null links
@@ -46,11 +46,11 @@ async function checkTaskLinks() {
       WHERE link IS NOT NULL
     `);
     
-    console.log(`\nNumber of tasks with non-null links: ${linkCount[0].count}`);
+    //console.log(`\nNumber of tasks with non-null links: ${linkCount[0].count}`);
     
     // If there are no tasks with links, insert a test link
     if (linkCount[0].count === 0) {
-      console.log('\nNo tasks with links found. Adding a test link to the first task...');
+      //console.log('\nNo tasks with links found. Adding a test link to the first task...');
       
       // Get the first task
       const [firstTask] = await connection.query(`
@@ -65,18 +65,18 @@ async function checkTaskLinks() {
           WHERE id = ?
         `, [taskId]);
         
-        console.log(`Added test link to task ID: ${taskId}`);
+        //console.log(`Added test link to task ID: ${taskId}`);
       } else {
-        console.log('No tasks found in the database');
+        //console.log('No tasks found in the database');
       }
     }
     
   } catch (error) {
-    console.error('Error checking task links:', error);
+    //console.error('Error checking task links:', error);
   } finally {
     // Close the connection
     await connection.end();
-    console.log('Database connection closed');
+    //console.log('Database connection closed');
   }
 }
 

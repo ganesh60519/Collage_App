@@ -43,7 +43,7 @@ const ForgotPassword = ({ navigation }) => {
         );
       }, 1500);
     } catch (error) {
-      console.error('Password reset error:', error);
+      //console.error('Password reset error:', error);
       Alert.alert('Connection Error', 'Unable to connect to the university portal. Please check your internet connection and try again later.');
       setLoading(false);
     }

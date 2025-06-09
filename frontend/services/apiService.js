@@ -42,19 +42,19 @@ api.interceptors.response.use(
     // Improved error logging to handle network errors
     if (error.response) {
       // Server responded with an error status
-      console.log(`API error status: ${error.response.status}, URL: ${originalRequest?.url}`);
+      //console.log(`API error status: ${error.response.status}, URL: ${originalRequest?.url}`);
     } else if (error.request) {
       // Request was made but no response received (network error)
-      console.log(`API network error: No response received, URL: ${originalRequest?.url}`);
-      console.log(`Network error details: ${error.message}`);
+      //console.log(`API network error: No response received, URL: ${originalRequest?.url}`);
+      //console.log(`Network error details: ${error.message}`);
     } else {
       // Error in setting up the request
-      console.log(`API request setup error: ${error.message}, URL: ${originalRequest?.url}`);
+      //console.log(`API request setup error: ${error.message}, URL: ${originalRequest?.url}`);
     }
     
     // If the error is due to an expired token (401) and we haven't tried to refresh yet
     if (error.response?.status === 401 && !originalRequest._retry) {
-      console.log('Attempting to refresh token due to 401 error');
+      //console.log('Attempting to refresh token due to 401 error');
       originalRequest._retry = true;
       
       try {
@@ -62,16 +62,16 @@ api.interceptors.response.use(
         const refreshed = await authUtils.refreshToken();
         
         if (refreshed) {
-          console.log('Token refreshed successfully, retrying original request');
+          //console.log('Token refreshed successfully, retrying original request');
           // If token refresh was successful, retry the original request
           const token = await authUtils.getToken();
           originalRequest.headers.Authorization = `Bearer ${token}`;
           return api(originalRequest);
         } else {
-          console.log('Token refresh failed, rejecting request');
+          //console.log('Token refresh failed, rejecting request');
         }
       } catch (refreshError) {
-        console.error('Error in token refresh process:', refreshError);
+        //console.error('Error in token refresh process:', refreshError);
       }
     }
     

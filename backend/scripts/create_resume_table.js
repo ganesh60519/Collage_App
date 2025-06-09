@@ -17,10 +17,10 @@ async function createResumeTable() {
         FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
       )
     `);
-    console.log('Resume table created successfully');
+    //console.log('Resume table created successfully');
     process.exit(0);
   } catch (error) {
-    console.error('Error creating resume table:', error);
+    //console.error('Error creating resume table:', error);
     process.exit(1);
   }
 }

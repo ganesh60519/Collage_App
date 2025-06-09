@@ -155,7 +155,7 @@ const Login = ({ navigation }) => {
         }
       }
     } catch (error) {
-      console.error('Login error:', error);
+      //console.error('Login error:', error);
       
       if (error.message && (
           error.message.includes('Network Error') || 

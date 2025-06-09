@@ -105,19 +105,19 @@ const HomeScreen = () => {
 
   // Initial data fetch and set up periodic refresh
   useEffect(() => {
-    console.log('Faculty HomeScreen mounted, initial data fetch');
+    //console.log('Faculty HomeScreen mounted, initial data fetch');
     // Initial fetch
     fetchData();
     
     // Set up interval to refresh tasks every 30 seconds
     const refreshInterval = setInterval(() => {
-      console.log('Auto-refreshing tasks...');
+      //console.log('Auto-refreshing tasks...');
       fetchTasks();
     }, 30000); // 30 seconds
     
     // Clean up interval on component unmount
     return () => {
-      console.log('Faculty HomeScreen unmounted, clearing interval');
+      //console.log('Faculty HomeScreen unmounted, clearing interval');
       clearInterval(refreshInterval);
     };
   }, []);
@@ -155,23 +155,23 @@ const HomeScreen = () => {
   // Refresh when screen comes into focus
   useFocusEffect(
     useCallback(() => {
-      console.log('Faculty dashboard in focus, refreshing data...');
+      //console.log('Faculty dashboard in focus, refreshing data...');
       fetchData();
       return () => {
-        console.log('Faculty dashboard lost focus');
+        //console.log('Faculty dashboard lost focus');
       };
     }, [])
   );
 
   const fetchData = async () => {
-    console.log('Fetching all faculty dashboard data...');
+    //console.log('Fetching all faculty dashboard data...');
     try {
       setIsLoading(true);
       
       // Check token first to avoid multiple login prompts
       const token = await AsyncStorage.getItem('token');
       if (!token) {
-        console.log('No token found, redirecting to login');
+        //console.log('No token found, redirecting to login');
         Alert.alert('Session Expired', 'Please login again');
         navigation.reset({
           index: 0,
@@ -188,13 +188,13 @@ const HomeScreen = () => {
           fetchTasks('self'),
           fetchStudents()
         ]);
-        console.log('Successfully fetched all faculty dashboard data');
+        //console.log('Successfully fetched all faculty dashboard data');
       } catch (err) {
-        console.error('Error in one of the fetch operations:', err);
+        //console.error('Error in one of the fetch operations:', err);
         // Continue execution even if one request fails
       }
     } catch (error) {
-      console.error('Error fetching dashboard data:', error);
+      //console.error('Error fetching dashboard data:', error);
       // Don't show alert on every error to avoid annoying the user
       if (!refreshing) {
         Alert.alert('Error', 'Failed to load data. Please check your network connection and try again.');
@@ -202,7 +202,7 @@ const HomeScreen = () => {
     } finally {
       setIsLoading(false);
       setRefreshing(false);
-      console.log('Finished fetching all faculty dashboard data');
+      //console.log('Finished fetching all faculty dashboard data');
     }
   };
 
@@ -224,7 +224,7 @@ const HomeScreen = () => {
       setProfile(response.data);
       return response.data;
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      //console.error('Error fetching profile:', error);
       // Don't throw the error, just return null
       return null;
     }
@@ -232,7 +232,7 @@ const HomeScreen = () => {
 
   const fetchTasks = async (type = 'assigned') => {
     try {
-      console.log(`Fetching latest ${type} tasks for faculty dashboard...`);
+      //console.log(`Fetching latest ${type} tasks for faculty dashboard...`);
       const token = await AsyncStorage.getItem('token');
       
       // Add a timestamp parameter to prevent caching
@@ -250,7 +250,7 @@ const HomeScreen = () => {
       
       // Log the first task to check if it has a link field
       if (response.data.length > 0) {
-        console.log(`First ${type} task details:`, JSON.stringify(response.data[0], null, 2));
+        //console.log(`First ${type} task details:`, JSON.stringify(response.data[0], null, 2));
       }
       
       if (type === 'self') {
@@ -260,7 +260,7 @@ const HomeScreen = () => {
       }
       return response.data;
     } catch (error) {
-      console.error(`Error fetching ${type} tasks:`, error);
+      //console.error(`Error fetching ${type} tasks:`, error);
       // Don't throw the error, just return an empty array
       if (type === 'self') {
         setSelfTasks([]);
@@ -280,7 +280,7 @@ const HomeScreen = () => {
       setStudents(response.data);
       return response.data;
     } catch (error) {
-      console.error('Error fetching students:', error);
+      //console.error('Error fetching students:', error);
       // Don't throw the error, just return an empty array
       setStudents([]);
       return [];
@@ -288,7 +288,7 @@ const HomeScreen = () => {
   };
 
   const onRefresh = useCallback(() => {
-    console.log('Home screen refresh triggered');
+    //console.log('Home screen refresh triggered');
     setRefreshing(true);
     // Add a small delay to ensure the refresh spinner is visible
     setTimeout(() => {
@@ -349,7 +349,7 @@ const HomeScreen = () => {
         );
       }
     } catch (error) {
-      console.error('Error assigning task:', error.response?.data || error);
+      //console.error('Error assigning task:', error.response?.data || error);
       Alert.alert('Error', error.response?.data?.error || 'Failed to assign task. Please try again.');
     } finally {
       setIsLoading(false);
@@ -403,7 +403,7 @@ const HomeScreen = () => {
         );
       }
     } catch (error) {
-      console.error('Error assigning self task:', error.response?.data || error);
+      //console.error('Error assigning self task:', error.response?.data || error);
       Alert.alert('Error', error.response?.data?.error || 'Failed to assign task to yourself. Please try again.');
     } finally {
       setIsLoading(false);
@@ -445,7 +445,7 @@ const HomeScreen = () => {
       <AnimatedCard delay={index * 100} style={styles.taskCard}>
         <TouchableOpacity 
           onPress={async () => {
-            console.log('Selected task ID:', item.id);
+            //console.log('Selected task ID:', item.id);
             
             try {
               // Fetch the latest task details from the server
@@ -457,12 +457,12 @@ const HomeScreen = () => {
                 }
               });
               
-              console.log('Fetched task details:', JSON.stringify(response.data, null, 2));
+              //console.log('Fetched task details:', JSON.stringify(response.data, null, 2));
               setSelectedTask(response.data);
             } catch (error) {
-              console.error('Error fetching task details:', error);
+              //console.error('Error fetching task details:', error);
               // Fall back to the list item data if fetch fails
-              console.log('Using list data instead:', JSON.stringify(item, null, 2));
+              //console.log('Using list data instead:', JSON.stringify(item, null, 2));
               setSelectedTask(item);
             }
             
@@ -870,9 +870,9 @@ const HomeScreen = () => {
                             if (!/^https?:\/\//i.test(url)) {
                               url = 'https://' + url;
                             }
-                            console.log('Opening URL:', url);
+                            //console.log('Opening URL:', url);
                             Linking.openURL(url).catch(err => {
-                              console.error('Error opening URL:', err);
+                              //console.error('Error opening URL:', err);
                               Alert.alert('Error', 'Could not open the link. Please check the URL.');
                             });
                           }}
@@ -2400,23 +2400,23 @@ const ProfileScreen = () => {
   // Refresh when screen comes into focus
   useFocusEffect(
     useCallback(() => {
-      console.log('Faculty profile screen in focus, refreshing data...');
+      //console.log('Faculty profile screen in focus, refreshing data...');
       fetchProfile();
       return () => {
         // Cleanup function when screen loses focus
-        console.log('Faculty profile screen lost focus');
+        //console.log('Faculty profile screen lost focus');
       };
     }, [])
   );
 
   const fetchProfile = async () => {
-    console.log('Fetching faculty profile data...');
+    //console.log('Fetching faculty profile data...');
     try {
       setIsLoading(true);
       const token = await AsyncStorage.getItem('token');
       
       if (!token) {
-        console.log('No token found, redirecting to login');
+        //console.log('No token found, redirecting to login');
         Alert.alert('Session Expired', 'Please login again');
         navigation.reset({
           index: 0,
@@ -2436,11 +2436,11 @@ const ProfileScreen = () => {
         },
       });
       
-      console.log('Profile data fetched successfully');
+      //console.log('Profile data fetched successfully');
       setProfile(response.data);
       return response.data;
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      //console.error('Error fetching profile:', error);
       // Don't show alert on every error to avoid annoying the user
       if (!refreshing) {
         Alert.alert('Error', 'Failed to fetch profile. Please check your network connection and try again.');
@@ -2449,19 +2449,19 @@ const ProfileScreen = () => {
     } finally {
       setIsLoading(false);
       setRefreshing(false);
-      console.log('Finished fetching faculty profile data');
+      //console.log('Finished fetching faculty profile data');
     }
   };
 
   const onRefresh = useCallback(() => {
-    console.log('Profile screen refresh triggered');
+    //console.log('Profile screen refresh triggered');
     setRefreshing(true);
     // Create a proper fetchData function for the profile screen
     const fetchData = async () => {
       try {
         await fetchProfile();
       } catch (error) {
-        console.error('Error refreshing profile:', error);
+        //console.error('Error refreshing profile:', error);
       } finally {
         setRefreshing(false);
       }

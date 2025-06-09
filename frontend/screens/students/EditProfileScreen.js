@@ -50,7 +50,7 @@ const EditProfileScreen = () => {
           throw new Error('Invalid profile data');
         }
       } catch (error) {
-        console.error('Error fetching profile:', error);
+        //console.error('Error fetching profile:', error);
         Alert.alert('Error', 'Failed to load profile data. Please try again.');
       } finally {
         setIsLoading(false);
@@ -107,7 +107,7 @@ const EditProfileScreen = () => {
         throw new Error('Profile update failed');
       }
     } catch (error) {
-      console.error('Error updating profile:', error);
+      //console.error('Error updating profile:', error);
       Alert.alert(
         'Error',
         `Failed to update profile: ${error.response?.data?.error || error.message || 'Unknown error'}`

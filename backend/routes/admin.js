@@ -81,7 +81,7 @@ router.get('/tickets', auth, async (req, res) => {
     );
     res.json(tickets);
   } catch (error) {
-    console.error(error);
+    //console.error(error);
     res.status(500).json({ message: 'Failed to fetch tickets' });
   }
 });
@@ -126,7 +126,7 @@ router.put('/profile-update-tickets/:id', auth, async (req, res) => {
 
     res.json({ success: true });
   } catch (error) {
-    console.error(error);
+    //console.error(error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -183,7 +183,7 @@ router.post('/refresh-token', auth, async (req, res) => {
     
     res.json({ token });
   } catch (error) {
-    console.error('Error refreshing token:', error);
+    //console.error('Error refreshing token:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -204,7 +204,7 @@ router.get('/profile', auth, async (req, res) => {
 
     res.json(rows[0]);
   } catch (error) {
-    console.error('Error fetching admin profile:', error);
+    //console.error('Error fetching admin profile:', error);
     res.status(500).json({ error: error.message });
   }
 });

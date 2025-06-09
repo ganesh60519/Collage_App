@@ -13,7 +13,7 @@ router.post('/complete/:id', auth, async (req, res) => {
   try {
     const taskId = req.params.id;
     
-    console.log(`Completing task ${taskId} for user ${req.user.id}`);
+    //console.log(`Completing task ${taskId} for user ${req.user.id}`);
     
     // Verify the task belongs to the student
     const [tasks] = await db.execute(
@@ -31,10 +31,10 @@ router.post('/complete/:id', auth, async (req, res) => {
       ['completed', taskId]
     );
     
-    console.log(`Task ${taskId} marked as completed successfully`);
+    //console.log(`Task ${taskId} marked as completed successfully`);
     res.json({ success: true, message: 'Task marked as completed successfully' });
   } catch (error) {
-    console.error('Error completing task:', error);
+    //console.error('Error completing task:', error);
     res.status(500).json({ error: error.message });
   }
 });

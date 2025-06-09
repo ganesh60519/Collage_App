@@ -12,9 +12,9 @@ async function checkResumeTable() {
     });
     
     const [columns] = await connection.execute('DESCRIBE resumes');
-    console.log('Current resume table columns:');
+    //console.log('Current resume table columns:');
     columns.forEach((col, index) => {
-      console.log(`${index + 1}. ${col.Field} (${col.Type})`);
+      //console.log(`${index + 1}. ${col.Field} (${col.Type})`);
     });
     
     // Check for duplicate reference columns
@@ -24,14 +24,14 @@ async function checkResumeTable() {
     );
     
     if (referenceColumns.length > 1) {
-      console.log('\n⚠️  Found duplicate reference columns:');
+      //console.log('\n⚠️  Found duplicate reference columns:');
       referenceColumns.forEach(col => {
-        console.log(`- ${col.Field}`);
+        //console.log(`- ${col.Field}`);
       });
     }
     
   } catch (error) {
-    console.error('Error:', error.message);
+    //console.error('Error:', error.message);
   } finally {
     if (connection) await connection.end();
   }

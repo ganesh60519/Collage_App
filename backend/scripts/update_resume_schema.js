@@ -5,7 +5,7 @@ async function updateResumeSchema() {
   let connection;
   
   try {
-    console.log('Connecting to database...');
+    //console.log('Connecting to database...');
     
     // Create a direct connection to the database
     connection = await mysql.createConnection({
@@ -15,15 +15,15 @@ async function updateResumeSchema() {
       database: process.env.DB_NAME
     });
     
-    console.log('Connected to database successfully');
+    //console.log('Connected to database successfully');
     
     // Check current table structure
-    console.log('Checking current table structure...');
+    //console.log('Checking current table structure...');
     const [currentColumns] = await connection.execute('DESCRIBE resumes');
     
-    console.log('Current columns:');
+    //console.log('Current columns:');
     const existingColumns = currentColumns.map(col => col.Field.toLowerCase());
-    console.log(existingColumns);
+    //console.log(existingColumns);
     
     // Define new columns to add
     const newColumns = [
@@ -53,38 +53,38 @@ async function updateResumeSchema() {
     ];
     
     // Add each new column if it doesn't exist
-    console.log('Adding new columns...');
+    //console.log('Adding new columns...');
     for (const column of newColumns) {
       if (!existingColumns.includes(column.name.toLowerCase())) {
-        console.log(`Adding column: ${column.name}`);
+        //console.log(`Adding column: ${column.name}`);
         try {
           await connection.execute(`ALTER TABLE resumes ADD COLUMN ${column.name} ${column.type}`);
-          console.log(`Added column: ${column.name}`);
+          //console.log(`Added column: ${column.name}`);
         } catch (err) {
-          console.error(`Error adding column ${column.name}:`, err.message);
+          //console.error(`Error adding column ${column.name}:`, err.message);
         }
       } else {
-        console.log(`Column ${column.name} already exists, skipping`);
+        //console.log(`Column ${column.name} already exists, skipping`);
       }
     }
     
     // Verify the updated table structure
-    console.log('\nVerifying updated table structure...');
+    //console.log('\nVerifying updated table structure...');
     const [updatedColumns] = await connection.execute('DESCRIBE resumes');
     
-    console.log('Updated columns:');
+    //console.log('Updated columns:');
     updatedColumns.forEach(col => {
-      console.log(`- ${col.Field} (${col.Type})`);
+      //console.log(`- ${col.Field} (${col.Type})`);
     });
     
-    console.log(`\nTotal columns: ${updatedColumns.length}`);
-    console.log('Schema update completed successfully');
+    //console.log(`\nTotal columns: ${updatedColumns.length}`);
+    //console.log('Schema update completed successfully');
     
   } catch (error) {
-    console.error('Error updating schema:', error);
+    //console.error('Error updating schema:', error);
   } finally {
     if (connection) {
-      console.log('Closing database connection');
+      //console.log('Closing database connection');
       await connection.end();
     }
   }

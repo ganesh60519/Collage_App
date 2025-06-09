@@ -15,7 +15,7 @@ const pool = mysql.createPool({
 // Function to complete a task
 async function completeTask(taskId) {
   try {
-    console.log(`Attempting to complete task ${taskId}`);
+    //console.log(`Attempting to complete task ${taskId}`);
     
     // Update the task status to completed
     const [result] = await pool.execute(
@@ -24,14 +24,14 @@ async function completeTask(taskId) {
     );
     
     if (result.affectedRows > 0) {
-      console.log(`Task ${taskId} marked as completed successfully`);
+      //console.log(`Task ${taskId} marked as completed successfully`);
       return true;
     } else {
-      console.log(`No task with ID ${taskId} was found`);
+      //console.log(`No task with ID ${taskId} was found`);
       return false;
     }
   } catch (error) {
-    console.error('Error completing task:', error);
+    //console.error('Error completing task:', error);
     return false;
   } finally {
     // Close the pool
@@ -43,7 +43,7 @@ async function completeTask(taskId) {
 const taskId = process.argv[2];
 
 if (!taskId) {
-  console.error('Usage: node direct_update.js <taskId>');
+  //console.error('Usage: node direct_update.js <taskId>');
   process.exit(1);
 }
 
@@ -51,13 +51,13 @@ if (!taskId) {
 completeTask(taskId)
   .then(success => {
     if (success) {
-      console.log('Task completed successfully');
+      //console.log('Task completed successfully');
     } else {
-      console.error('Failed to complete task');
+      //console.error('Failed to complete task');
     }
     process.exit(0);
   })
   .catch(error => {
-    console.error('Error:', error);
+    //console.error('Error:', error);
     process.exit(1);
   });

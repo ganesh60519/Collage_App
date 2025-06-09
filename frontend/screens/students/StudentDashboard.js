@@ -327,18 +327,18 @@ const HomeScreen = () => {
           </View>
         </AnimatedCard>
 
-        {/* Resume Generate Card */}
+        {/* Resume Card - Advanced Templates, navigates to ViewResume */}
         <AnimatedCard delay={500} style={styles.modernOverviewCard}>
           <TouchableOpacity
             style={{ alignItems: 'center', flexDirection: 'row' }}
-            onPress={() => navigation.getParent().navigate('GenerateResume')}
+            onPress={() => navigation.getParent().navigate('ViewResume')}
           >
-            <View style={[styles.modernStatIcon, { backgroundColor: '#fef3c7', marginRight: 16 }]}>
-              <MaterialIcons name="article" size={32} color="#f59e0b" />
+            <View style={[styles.modernStatIcon, { backgroundColor: '#eff6ff', marginRight: 16 }]}>
+              <MaterialIcons name="article" size={32} color="#1e40af" />
             </View>
             <View>
-              <Text style={{ fontSize: 18, fontWeight: '700', color: '#1e293b' }}>Generate Resume</Text>
-              <Text style={{ fontSize: 14, color: '#64748b', marginTop: 2 }}>Create or update your resume</Text>
+              <Text style={{ fontSize: 18, fontWeight: '700', color: '#1e293b' }}>Advanced Resume</Text>
+              <Text style={{ fontSize: 14, color: '#64748b', marginTop: 2 }}>Professional templates for career advancement</Text>
             </View>
           </TouchableOpacity>
         </AnimatedCard>
@@ -794,54 +794,53 @@ const TasksScreen = () => {
 
   const renderTask = ({ item, index }) => {
     const statusStyle = getStatusColor(item.status);
-    
+
     return (
-      <AnimatedCard delay={index * 100} style={styles.taskCard}>
+      <AnimatedCard delay={index * 100} style={[styles.taskCard, { borderLeftWidth: 5, borderLeftColor: statusStyle.text }]}>
         <TouchableOpacity 
           onPress={() => {
             initializeTaskForm(item);
           }}
+          style={{ flexDirection: 'row', alignItems: 'center' }}
         >
-          <View style={styles.taskCardHeader}>
-            <View style={[styles.taskStatusBadge, { backgroundColor: statusStyle.bg }]}>
-              <MaterialIcons name={statusStyle.icon} size={16} color={statusStyle.text} />
-              <Text style={[styles.taskStatusText, { color: statusStyle.text }]}>
-                {item.status}
-              </Text>
-            </View>
-            <Text style={styles.taskDate}>
-              Due: {new Date(item.due_date).toLocaleDateString()}
-            </Text>
-          </View>
-          
-          <Text style={styles.taskCardTitle}>{item.title}</Text>
-          
-          <Text style={styles.taskCardDescription} numberOfLines={2}>
-            {item.description}
-          </Text>
-          
-          <View style={styles.taskCardFooter}>
-            <View style={styles.assignedByContainer}>
-              <MaterialIcons name="person" size={16} color="#6b7280" />
-              <Text style={styles.assignedByText}>
-                {item.assigned_by}
-              </Text>
-            </View>
-            
-            <View style={styles.taskMetaIcons}>
-              {item.notes && (
-                <View style={styles.taskMetaIcon}>
-                  <MaterialIcons name="note" size={16} color="#6366f1" />
-                </View>
-              )}
-              {item.link && (
-                <View style={styles.taskMetaIcon}>
-                  <MaterialIcons name="link" size={16} color="#6366f1" />
-                </View>
-              )}
-              <View style={styles.taskCardAction}>
-                <MaterialIcons name="chevron-right" size={20} color="#6366f1" />
+          <View style={{ flex: 1 }}>
+            <View style={styles.taskCardHeader}>
+              <View style={[styles.taskStatusBadge, { backgroundColor: statusStyle.bg }]}>
+                <MaterialIcons name={statusStyle.icon} size={16} color={statusStyle.text} />
+                <Text style={[styles.taskStatusText, { color: statusStyle.text }]}>
+                  {item.status}
+                </Text>
               </View>
+              <Text style={styles.taskDate}>
+                Due: {new Date(item.due_date).toLocaleDateString()}
+              </Text>
+            </View>
+            <Text style={styles.taskCardTitle}>{item.title}</Text>
+            <Text style={styles.taskCardDescription} numberOfLines={2}>
+              {item.description}
+            </Text>
+            <View style={styles.taskCardFooter}>
+              <View style={styles.assignedByContainer}>
+                <MaterialIcons name="person" size={16} color="#6b7280" />
+                <Text style={styles.assignedByText}>
+                  {item.assigned_by}
+                </Text>
+              </View>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#6366f1',
+                  borderRadius: 8,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginLeft: 8,
+                }}
+                onPress={() => initializeTaskForm(item)}
+              >
+                <MaterialIcons name="visibility" size={16} color="#fff" />
+                <Text style={{ color: '#fff', fontWeight: '600', marginLeft: 4, fontSize: 13 }}>View Details</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </TouchableOpacity>
@@ -2085,7 +2084,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   modernQuickActionText: {
-    fontSize: 16,
+       fontSize: 16,
     fontWeight: '700',
     color: '#1e293b',
     marginBottom: 4,

@@ -38,7 +38,7 @@ const  ResumeScreen = () => {
   const [templateModalVisible, setTemplateModalVisible] = useState(false);
   const [pdfViewerVisible, setPdfViewerVisible] = useState(false);
 
-  const [selectedTemplate, setSelectedTemplate] = useState('modern');
+  const [selectedTemplate, setSelectedTemplate] = useState('modern-pro');
   const [studentInfo, setStudentInfo] = useState(null);
   const [pdfUrl, setPdfUrl] = useState('');
   const [resume, setResume] = useState({
@@ -61,26 +61,26 @@ const  ResumeScreen = () => {
   const testResumeEndpoint = async () => {
     try {
       // Test the resume-specific endpoint directly
-      console.log(`Testing resume endpoint: http://${IP}:3000/api/student/resume-test`);
+      //console.log(`Testing resume endpoint: http://${IP}:3000/api/student/resume-test`);
       const resumeResponse = await axios.get(`http://${IP}:3000/api/student/resume-test`);
-      console.log('Resume test response:', resumeResponse.data);
+      //console.log('Resume test response:', resumeResponse.data);
       
       if (resumeResponse.data && resumeResponse.data.message) {
         ToastAndroid.show('Resume API connection successful!', ToastAndroid.SHORT);
-        console.log('Resume test endpoint working, now fetching resume');
+        //console.log('Resume test endpoint working, now fetching resume');
         fetchResume();
       }
     } catch (error) {
-      console.error('Error testing resume endpoint:', error);
+      //console.error('Error testing resume endpoint:', error);
       
       if (error.response) {
-        console.error('Response error:', error.response.status, error.response.data);
+        //console.error('Response error:', error.response.status, error.response.data);
         Alert.alert('API Error', `Resume test endpoint failed: ${error.response.status}`);
       } else if (error.request) {
-        console.error('Request error - no response received');
+        //console.error('Request error - no response received');
         Alert.alert('Network Error', 'Could not connect to the server. Please check your internet connection and server status.');
       } else {
-        console.error('Error setting up request:', error.message);
+        //console.error('Error setting up request:', error.message);
         Alert.alert('Error', `Request setup failed: ${error.message}`);
       }
     }
@@ -95,14 +95,14 @@ const  ResumeScreen = () => {
       const token = await AsyncStorage.getItem('token');
       
       if (!token) {
-        console.error('No token found');
+        //console.error('No token found');
         Alert.alert('Authentication Error', 'No authentication token found. Please login again.');
         setIsLoading(false);
         return;
       }
       
-      console.log(`Fetching resume from: http://${IP}:3000/api/student/resume`);
-      console.log(`Token available: ${token ? 'Yes' : 'No'}`);
+      //console.log(`Fetching resume from: http://${IP}:3000/api/student/resume`);
+      //console.log(`Token available: ${token ? 'Yes' : 'No'}`);
       
       // Try the authenticated resume endpoint
       try {
@@ -111,10 +111,10 @@ const  ResumeScreen = () => {
           timeout: 10000 // 10 second timeout
         });
         
-        console.log('Resume fetch response:', response.status);
+        //console.log('Resume fetch response:', response.status);
         
         if (response.data && !response.data.error) {
-          console.log('Resume data received');
+          //console.log('Resume data received');
           setResumeExists(true);
           
           // Store student info if available
@@ -137,26 +137,26 @@ const  ResumeScreen = () => {
           ToastAndroid.show('Resume loaded successfully!', ToastAndroid.SHORT);
         }
       } catch (resumeError) {
-        console.error('Error fetching resume:', resumeError);
+        //console.error('Error fetching resume:', resumeError);
         
         // If it's a 404, it means the resume doesn't exist yet, which is fine
         if (resumeError.response && resumeError.response.status === 404) {
-          console.log('No resume exists yet, user can create one');
+          //console.log('No resume exists yet, user can create one');
           setResumeExists(false);
           ToastAndroid.show('Create your first resume!', ToastAndroid.SHORT);
         } else if (resumeError.response) {
-          console.error('Response error:', resumeError.response.status, resumeError.response.data);
+          //console.error('Response error:', resumeError.response.status, resumeError.response.data);
           Alert.alert('Error', `Failed to fetch resume data: ${resumeError.response.status}`);
         } else if (resumeError.request) {
-          console.error('Request error - no response received');
+          //console.error('Request error - no response received');
           Alert.alert('Network Error', 'Could not connect to the resume API. Please check your internet connection.');
         } else {
-          console.error('Error setting up request:', resumeError.message);
+          //console.error('Error setting up request:', resumeError.message);
           Alert.alert('Error', `Request setup failed: ${resumeError.message}`);
         }
       }
     } catch (error) {
-      console.error('Unexpected error in fetchResume:', error);
+      //console.error('Unexpected error in fetchResume:', error);
       Alert.alert('Error', 'An unexpected error occurred while fetching your resume.');
     } finally {
       setIsLoading(false);
@@ -209,7 +209,7 @@ const  ResumeScreen = () => {
         return false;
       }
     } catch (error) {
-      console.error('Error saving resume:', error);
+      //console.error('Error saving resume:', error);
       
       if (showAlerts) {
         if (error.response) {
@@ -284,7 +284,7 @@ const  ResumeScreen = () => {
       if (response.data && response.data.success) {
         // Set the PDF URL directly
         setPdfUrl(response.data.pdfUrl);
-        setSelectedTemplate('modern');
+        setSelectedTemplate('modern-pro');
         
         // Show the PDF modal
         setPdfModalVisible(true);
@@ -293,7 +293,7 @@ const  ResumeScreen = () => {
         Alert.alert('Error', 'Failed to generate resume. Please try again.');
       }
     } catch (error) {
-      console.error('Error generating quick resume:', error);
+      //console.error('Error generating quick resume:', error);
       Alert.alert('Error', 'Failed to generate resume. Please check your connection and try again.');
     } finally {
       setIsLoading(false);
@@ -301,7 +301,7 @@ const  ResumeScreen = () => {
   };
   
   // Advanced PDF generation with template selection
-  const generatePDF = async (template = 'modern') => {
+  const generatePDF = async (template = 'modern-pro') => {
     try {
       setIsLoading(true);
       setSelectedTemplate(template);
@@ -350,7 +350,7 @@ const  ResumeScreen = () => {
         Alert.alert('Error', 'Failed to generate resume with selected template.');
       }
     } catch (error) {
-      console.error('Error generating PDF:', error);
+      //console.error('Error generating PDF:', error);
       Alert.alert('Error', 'Failed to generate resume. Please try again.');
     } finally {
       setIsLoading(false);
@@ -374,7 +374,7 @@ const  ResumeScreen = () => {
       const fileName = `temp_resume_${Date.now()}.pdf`;
       const fileUri = FileSystem.cacheDirectory + fileName;
       
-      console.log(`Downloading PDF for in-app viewing: ${pdfUrl}`);
+      //console.log(`Downloading PDF for in-app viewing: ${pdfUrl}`);
       
       const downloadResult = await FileSystem.downloadAsync(pdfUrl, fileUri);
       
@@ -392,7 +392,7 @@ const  ResumeScreen = () => {
           try {
             await FileSystem.deleteAsync(downloadResult.uri, { idempotent: true });
           } catch (cleanupError) {
-            console.log('Cleanup error (non-critical):', cleanupError);
+            //console.log('Cleanup error (non-critical):', cleanupError);
           }
         }, 5000);
         
@@ -401,7 +401,7 @@ const  ResumeScreen = () => {
       }
       
     } catch (error) {
-      console.error('Error viewing PDF in app:', error);
+      //console.error('Error viewing PDF in app:', error);
       Alert.alert(
         'Error', 
         'Failed to open PDF in app. Please try again.',
@@ -436,8 +436,8 @@ const  ResumeScreen = () => {
         ? `${studentInfo.name.replace(/\s+/g, '_')}_Resume.pdf` 
         : `Resume_${Date.now()}.pdf`;
       
-      console.log(`Preparing to share resume: ${fileName}`);
-      console.log(`PDF URL: ${pdfUrl}`);
+      //console.log(`Preparing to share resume: ${fileName}`);
+      //console.log(`PDF URL: ${pdfUrl}`);
       
       // Download the PDF to a temporary location for sharing
       const fileUri = FileSystem.cacheDirectory + fileName;
@@ -461,7 +461,7 @@ const  ResumeScreen = () => {
       if (downloadResult.status === 200) {
         // Verify the file exists and has content
         const fileInfo = await FileSystem.getInfoAsync(fileUri);
-        console.log('Downloaded file info for sharing:', fileInfo);
+        //console.log('Downloaded file info for sharing:', fileInfo);
         
         if (fileInfo.exists && fileInfo.size > 0) {
           // Share the PDF file using Expo Sharing
@@ -477,9 +477,9 @@ const  ResumeScreen = () => {
           setTimeout(async () => {
             try {
               await FileSystem.deleteAsync(fileUri, { idempotent: true });
-              console.log('Temporary share file cleaned up');
+              //console.log('Temporary share file cleaned up');
             } catch (cleanupError) {
-              console.log('Cleanup error (non-critical):', cleanupError);
+              //console.log('Cleanup error (non-critical):', cleanupError);
             }
           }, 10000); // 10 seconds delay to ensure sharing is complete
           
@@ -491,7 +491,7 @@ const  ResumeScreen = () => {
       }
       
     } catch (error) {
-      console.error('Error sharing resume:', error);
+      //console.error('Error sharing resume:', error);
       Alert.alert(
         'Share Error', 
         'Failed to share resume. Please try again.',
@@ -1066,13 +1066,15 @@ const  ResumeScreen = () => {
           contentContainerStyle={styles.modernTemplatesContainer}
         >
           {[
-            { name: 'modern', color: '#3b82f6', bgColor: '#f8fafc', description: 'Clean & Professional' },
-            { name: 'classic', color: '#1f2937', bgColor: '#fefefe', description: 'Traditional & Elegant' },
-            { name: 'creative', color: '#8b5cf6', bgColor: '#f3e8ff', description: 'Unique design' },
-            { name: 'technical', color: '#6b7280', bgColor: '#f1f5f9', description: 'Technical roles' },
-            { name: 'professional', color: '#f97316', bgColor: '#374151', description: 'Dark gray & orange' },
-            { name: 'academic', color: '#7f1d1d', bgColor: '#fef2f2', description: 'Formal maroon' },
-            { name: 'elegant', color: '#ca8a04', bgColor: '#fefce8', description: 'Light blue & gold' }
+            { name: 'modern-pro', color: '#3b82f6', bgColor: '#f8fafc', description: 'Advanced Professional' },
+            { name: 'executive', color: '#1e40af', bgColor: '#eff6ff', description: 'Senior Executive' },
+            { name: 'technical-expert', color: '#0f766e', bgColor: '#f0fdfa', description: 'Technical Expert' },
+            { name: 'creative-director', color: '#8b5cf6', bgColor: '#f3e8ff', description: 'Creative Leadership' },
+            { name: 'corporate', color: '#1f2937', bgColor: '#f8fafc', description: 'Corporate Leadership' },
+            { name: 'consultant', color: '#0e7490', bgColor: '#ecfeff', description: 'Consulting Professional' },
+            { name: 'research', color: '#7f1d1d', bgColor: '#fef2f2', description: 'Research & Academic' },
+            { name: 'startup', color: '#047857', bgColor: '#ecfdf5', description: 'Startup & Innovation' },
+            { name: 'international', color: '#4338ca', bgColor: '#eef2ff', description: 'Global Professional' }
           ].map((template) => (
             <TouchableOpacity 
               key={template.name}

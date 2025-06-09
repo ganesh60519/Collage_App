@@ -77,7 +77,7 @@ const Registration = ({ navigation }) => {
         ]);
       }
     } catch (error) {
-      console.error('Registration error:', error);
+      //console.error('Registration error:', error);
       const errorMessage =
         error.response?.data?.error || 'Registration failed. Please try again.';
       Alert.alert('Registration Error', `Unable to complete university registration: ${errorMessage}. Please contact the university IT support if this issue persists.`);

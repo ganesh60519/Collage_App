@@ -11,17 +11,17 @@ async function fixDuplicateColumns() {
       database: process.env.DB_NAME
     });
     
-    console.log('🔧 Fixing duplicate columns in resumes table...\n');
+    //console.log('🔧 Fixing duplicate columns in resumes table...\n');
     
     // First, let's check current structure
     const [columns] = await connection.execute('DESCRIBE resumes');
-    console.log('Current columns:');
+    //console.log('Current columns:');
     columns.forEach((col, index) => {
-      console.log(`${index + 1}. ${col.Field}`);
+      //console.log(`${index + 1}. ${col.Field}`);
     });
     
     // Step 1: Merge data from references_info into reference_info if needed
-    console.log('\n📋 Step 1: Merging reference data...');
+    //console.log('\n📋 Step 1: Merging reference data...');
     await connection.execute(`
       UPDATE resumes 
       SET reference_info = CASE 
@@ -33,7 +33,7 @@ async function fixDuplicateColumns() {
     `);
     
     // Step 2: Merge education and skills data into educationskills if needed
-    console.log('📋 Step 2: Merging education and skills data...');
+    //console.log('📋 Step 2: Merging education and skills data...');
     await connection.execute(`
       UPDATE resumes 
       SET educationskills = CASE 
@@ -50,44 +50,44 @@ async function fixDuplicateColumns() {
     `);
     
     // Step 3: Drop duplicate columns
-    console.log('📋 Step 3: Dropping duplicate columns...');
+    //console.log('📋 Step 3: Dropping duplicate columns...');
     
     // Drop references_info (keeping reference_info)
     try {
       await connection.execute('ALTER TABLE resumes DROP COLUMN references_info');
-      console.log('✅ Dropped references_info column');
+      //console.log('✅ Dropped references_info column');
     } catch (error) {
-      console.log('⚠️  references_info column may not exist:', error.message);
+      //console.log('⚠️  references_info column may not exist:', error.message);
     }
     
     // Drop education column (keeping educationskills)
     try {
       await connection.execute('ALTER TABLE resumes DROP COLUMN education');
-      console.log('✅ Dropped education column');
+      //console.log('✅ Dropped education column');
     } catch (error) {
-      console.log('⚠️  education column may not exist:', error.message);
+      //console.log('⚠️  education column may not exist:', error.message);
     }
     
     // Drop skills column (keeping educationskills)
     try {
       await connection.execute('ALTER TABLE resumes DROP COLUMN skills');
-      console.log('✅ Dropped skills column');
+      //console.log('✅ Dropped skills column');
     } catch (error) {
-      console.log('⚠️  skills column may not exist:', error.message);
+      //console.log('⚠️  skills column may not exist:', error.message);
     }
     
     // Step 4: Verify final structure
-    console.log('\n📋 Step 4: Verifying final structure...');
+    //console.log('\n📋 Step 4: Verifying final structure...');
     const [finalColumns] = await connection.execute('DESCRIBE resumes');
-    console.log('\nFinal resume table columns:');
+    //console.log('\nFinal resume table columns:');
     finalColumns.forEach((col, index) => {
-      console.log(`${index + 1}. ${col.Field} (${col.Type})`);
+      //console.log(`${index + 1}. ${col.Field} (${col.Type})`);
     });
     
-    console.log('\n✅ Successfully cleaned up duplicate columns!');
+    //console.log('\n✅ Successfully cleaned up duplicate columns!');
     
   } catch (error) {
-    console.error('❌ Error fixing duplicate columns:', error.message);
+    //console.error('❌ Error fixing duplicate columns:', error.message);
   } finally {
     if (connection) await connection.end();
   }

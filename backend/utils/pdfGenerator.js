@@ -5,31 +5,31 @@ const PDFDocument = require('pdfkit');
  * @param {Object} resumeData - The resume data
  * @param {Object} studentInfo - The student information
  * @param {Stream} stream - The stream to write the PDF to
- * @param {String} template - The template to use (modern, classic, executive, minimalist, creative, technical)
+ * @param {String} template - The template to use (modern-pro, executive, technical-expert, creative-director, corporate, consultant, research, startup, international)
  * @param {String} layout - The layout to use (single-column, two-column)
  */
-function generateResumePDF(resumeData, studentInfo, stream, template = 'modern', layout = 'single-column') {
+function generateResumePDF(resumeData, studentInfo, stream, template = 'modern-pro', layout = 'single-column') {
   // Normalize the template parameter
-  const normalizedTemplate = (template || 'modern').toLowerCase().trim();
+  const normalizedTemplate = (template || 'modern-pro').toLowerCase().trim();
   
   // Normalize the layout parameter
   const normalizedLayout = (layout || 'single-column').toLowerCase().trim();
   
   // Log the template and layout being used for debugging
-  console.log(`PDF Generator: Using template "${normalizedTemplate}" with layout "${normalizedLayout}"`);
+  //console.log(`PDF Generator: Using template "${normalizedTemplate}" with layout "${normalizedLayout}"`);
   
   // Debug log to see what fields are available in the resumeData
-  console.log('Resume Data Fields:', Object.keys(resumeData));
+  //console.log('Resume Data Fields:', Object.keys(resumeData));
   
   // Check if resumeData is properly structured
   if (!resumeData || typeof resumeData !== 'object') {
-    console.error('Invalid resume data format:', resumeData);
+    //console.error('Invalid resume data format:', resumeData);
     resumeData = {}; // Provide empty object as fallback
   }
   
   // Check if studentInfo is properly structured
   if (!studentInfo || typeof studentInfo !== 'object') {
-    console.error('Invalid student info format:', studentInfo);
+    //console.error('Invalid student info format:', studentInfo);
     studentInfo = {}; // Provide empty object as fallback
   }
   
@@ -54,62 +54,62 @@ function generateResumePDF(resumeData, studentInfo, stream, template = 'modern',
     branch: typeof studentInfo.branch === 'string' ? studentInfo.branch : ''
   };
   
-  console.log('PDF Generator: Resume data and student info validated and sanitized');
+  //console.log('PDF Generator: Resume data and student info validated and sanitized');
   
   // Select the appropriate template function
   try {
     switch (normalizedTemplate) {
       case 'modern':
-        console.log(`Generating Modern template with blue accents using ${normalizedLayout} layout`);
+        //console.log(`Generating Modern template with blue accents using ${normalizedLayout} layout`);
         generateModernTemplate(safeResumeData, safeStudentInfo, stream, normalizedLayout);
         break;
       case 'classic':
-        console.log(`Generating Classic template with black and white styling using ${normalizedLayout} layout`);
+        //console.log(`Generating Classic template with black and white styling using ${normalizedLayout} layout`);
         generateClassicTemplate(safeResumeData, safeStudentInfo, stream, normalizedLayout);
         break;
       case 'executive':
-        console.log(`Generating Executive template with dark blue header using ${normalizedLayout} layout`);
+        //console.log(`Generating Executive template with dark blue header using ${normalizedLayout} layout`);
         generateExecutiveTemplate(safeResumeData, safeStudentInfo, stream, normalizedLayout);
         break;
       case 'minimalist':
-        console.log(`Generating Minimalist template with green accents using ${normalizedLayout} layout`);
+        //console.log(`Generating Minimalist template with green accents using ${normalizedLayout} layout`);
         generateMinimalistTemplate(safeResumeData, safeStudentInfo, stream, normalizedLayout);
         break;
       case 'creative':
-        console.log(`Generating Creative template with purple styling using ${normalizedLayout} layout`);
+        //console.log(`Generating Creative template with purple styling using ${normalizedLayout} layout`);
         generateCreativeTemplate(safeResumeData, safeStudentInfo, stream, normalizedLayout);
         break;
       case 'technical':
-        console.log(`Generating Technical template with code-like formatting using ${normalizedLayout} layout`);
+        //console.log(`Generating Technical template with code-like formatting using ${normalizedLayout} layout`);
         generateTechnicalTemplate(safeResumeData, safeStudentInfo, stream, normalizedLayout);
         break;
       case 'professional':
-        console.log(`Generating Professional template with dark gray and orange accents using ${normalizedLayout} layout`);
+        //console.log(`Generating Professional template with dark gray and orange accents using ${normalizedLayout} layout`);
         generateProfessionalTemplate(safeResumeData, safeStudentInfo, stream, normalizedLayout);
         break;
       case 'academic':
-        console.log(`Generating Academic template with formal maroon styling using ${normalizedLayout} layout`);
+        //console.log(`Generating Academic template with formal maroon styling using ${normalizedLayout} layout`);
         generateAcademicTemplate(safeResumeData, safeStudentInfo, stream, normalizedLayout);
         break;
       case 'elegant':
-            console.log(`Generating Elegant template with light blue and gold accents using ${normalizedLayout} layout`);
+            //console.log(`Generating Elegant template with light blue and gold accents using ${normalizedLayout} layout`);
             generateElegantTemplate(safeResumeData, safeStudentInfo, stream, normalizedLayout);
             break;
           case 'newTemplate1Name': // Give your new template a unique name
-            console.log(`Generating New Template 1 with [description] using ${normalizedLayout} layout`);
+            //console.log(`Generating New Template 1 with [description] using ${normalizedLayout} layout`);
             generateNewTemplate1(safeResumeData, safeStudentInfo, stream, normalizedLayout); // Call your new function
             break;
           case 'newTemplate2Name':
-            console.log(`Generating New Template 2 with [description] using ${normalizedLayout} layout`);
+            //console.log(`Generating New Template 2 with [description] using ${normalizedLayout} layout`);
             generateNewTemplate2(safeResumeData, safeStudentInfo, stream, normalizedLayout);
             break;
           default:
-            console.log(`Unknown template "${normalizedTemplate}", falling back to Modern template with ${normalizedLayout} layout`);
+            //console.log(`Unknown template "${normalizedTemplate}", falling back to Modern template with ${normalizedLayout} layout`);
             generateModernTemplate(safeResumeData, safeStudentInfo, stream, normalizedLayout);
     }
-    console.log('PDF generation completed successfully');
+    //console.log('PDF generation completed successfully');
   } catch (error) {
-    console.error('Error generating PDF:', error);
+    //console.error('Error generating PDF:', error);
     
     // Create a simple error PDF
     const doc = new PDFDocument();

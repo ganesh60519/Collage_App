@@ -30,7 +30,7 @@ const authUtils = {
       
       return true;
     } catch (error) {
-      console.error('Error checking token validity:', error);
+      //console.error('Error checking token validity:', error);
       return false;
     }
   },
@@ -45,11 +45,11 @@ const authUtils = {
       const userRole = await AsyncStorage.getItem('userRole');
       
       if (!token || !userRole) {
-        console.log('No token or userRole found for refresh');
+        //console.log('No token or userRole found for refresh');
         return false;
       }
       
-      console.log(`Attempting to refresh token for role: ${userRole}`);
+      //console.log(`Attempting to refresh token for role: ${userRole}`);
       
       // Create a direct axios instance for this request to avoid circular dependencies
       const refreshApi = axios.create({
@@ -68,22 +68,22 @@ const authUtils = {
           ? 'faculty/refresh-token'
           : 'student/refresh-token';
       
-      console.log(`Calling refresh endpoint: ${endpoint}`);
+      //console.log(`Calling refresh endpoint: ${endpoint}`);
       
       const response = await refreshApi.post(endpoint, {});
       
       if (response.data && response.data.token) {
-        console.log('Token refresh successful, updating storage');
+        //console.log('Token refresh successful, updating storage');
         await AsyncStorage.setItem('token', response.data.token);
         await AsyncStorage.setItem('loginTime', Date.now().toString());
         return true;
       } else {
-        console.log('Token refresh response did not contain a token');
+        //console.log('Token refresh response did not contain a token');
         return false;
       }
     } catch (error) {
-      console.error('Error refreshing token:', error);
-      console.error('Error details:', error.response?.status, error.response?.data);
+      //console.error('Error refreshing token:', error);
+      //console.error('Error details:', error.response?.status, error.response?.data);
       return false;
     }
   },
@@ -98,7 +98,7 @@ const authUtils = {
       await AsyncStorage.removeItem('userRole');
       await AsyncStorage.removeItem('loginTime');
     } catch (error) {
-      console.error('Error during logout:', error);
+      //console.error('Error during logout:', error);
     }
   },
   
@@ -110,7 +110,7 @@ const authUtils = {
     try {
       return await AsyncStorage.getItem('userRole');
     } catch (error) {
-      console.error('Error getting user role:', error);
+      //console.error('Error getting user role:', error);
       return null;
     }
   },
@@ -123,7 +123,7 @@ const authUtils = {
     try {
       return await AsyncStorage.getItem('token');
     } catch (error) {
-      console.error('Error getting token:', error);
+      //console.error('Error getting token:', error);
       return null;
     }
   }

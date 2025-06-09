@@ -114,13 +114,13 @@ const HomeScreen = () => {
   }, []);
 
   const fetchDashboardData = async (isManualRefresh = false) => {
-    console.log('Fetching admin dashboard data...');
+    //console.log('Fetching admin dashboard data...');
     try {
       if (!isManualRefresh) setIsLoading(true);
       const token = await AsyncStorage.getItem('token');
       
       if (!token) {
-        console.log('No token found, redirecting to login');
+        //console.log('No token found, redirecting to login');
         Alert.alert('Session Expired', 'Please login again');
         navigation.reset({
           index: 0,
@@ -150,7 +150,7 @@ const HomeScreen = () => {
         axios.get(`http://${IP}:3000/api/admin/tickets?timestamp=${timestamp}`, { headers })
       ]);
       
-      console.log(`Fetched data: ${usersResponse.data.students.length} students, ${usersResponse.data.faculty.length} faculty, ${tasksResponse.data.length} tasks, ${ticketsResponse.data.length} tickets`);
+      //console.log(`Fetched data: ${usersResponse.data.students.length} students, ${usersResponse.data.faculty.length} faculty, ${tasksResponse.data.length} tasks, ${ticketsResponse.data.length} tickets`);
       
       // Calculate stats
       const pendingTickets = ticketsResponse.data.filter(ticket => 
@@ -165,7 +165,7 @@ const HomeScreen = () => {
         pendingTickets
       });
     } catch (error) {
-      console.error('Error fetching dashboard data:', error);
+      //console.error('Error fetching dashboard data:', error);
       // Don't show alert on every error to avoid annoying the user
       if (!refreshing) {
         Alert.alert(
@@ -176,12 +176,12 @@ const HomeScreen = () => {
     } finally {
       setIsLoading(false);
       setRefreshing(false);
-      console.log('Finished fetching admin dashboard data');
+      //console.log('Finished fetching admin dashboard data');
     }
   };
 
   const onRefresh = useCallback(() => {
-    console.log('Manual refresh triggered');
+    //console.log('Manual refresh triggered');
     setRefreshing(true);
     setTimeout(() => {
       fetchDashboardData(true); // Pass true to indicate manual refresh
@@ -373,7 +373,7 @@ const UsersScreen = () => {
       });
       setUsers(response.data);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      //console.error('Error fetching users:', error);
       Alert.alert('Directory Error', 'Unable to retrieve university personnel directory. Please try again later or contact IT support.');
     } finally {
       setIsLoading(false);
@@ -917,7 +917,7 @@ const TasksScreen = () => {
       });
       setTasks(response.data);
     } catch (error) {
-      console.error('Error fetching tasks:', error);
+      //console.error('Error fetching tasks:', error);
       Alert.alert('Error', 'Failed to fetch tasks');
     } finally {
       setIsLoading(false);
@@ -1194,7 +1194,7 @@ const TicketsScreen = () => {
       });
       setTickets(response.data);
     } catch (error) {
-      console.error('Error fetching tickets:', error);
+      //console.error('Error fetching tickets:', error);
       Alert.alert('Error', 'Failed to fetch tickets');
     } finally {
       setIsLoading(false);
@@ -1224,7 +1224,7 @@ const TicketsScreen = () => {
         }}]
       );
     } catch (error) {
-      console.error(`Error ${action}ing ticket:`, error);
+      //console.error(`Error ${action}ing ticket:`, error);
       Alert.alert('Error', `Failed to ${action} ticket`);
     }
   };
@@ -1643,7 +1643,7 @@ const ProfileScreen = () => {
       });
       setProfile(response.data);
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      //console.error('Error fetching profile:', error);
       Alert.alert('Error', 'Failed to fetch profile');
     } finally {
       setIsLoading(false);

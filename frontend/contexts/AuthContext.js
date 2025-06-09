@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(isValid);
         setUserRole(role);
       } catch (error) {
-        console.error('Error checking auth status:', error);
+        //console.error('Error checking auth status:', error);
         setIsAuthenticated(false);
         setUserRole(null);
       } finally {
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       setUserRole(role);
     } catch (error) {
-      console.error('Error during login:', error);
+      //console.error('Error during login:', error);
       throw error;
     }
   };
@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(false);
       setUserRole(null);
     } catch (error) {
-      console.error('Error during logout:', error);
+      //console.error('Error during logout:', error);
       throw error;
     }
   };
